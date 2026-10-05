@@ -37,6 +37,8 @@ Flow:
 
 ## 3. Recommended Folder Structure
 
+Route groups mengikuti peta layar di `design.md` §17 (landing, jobs, login/register di `(public)`; dashboard role di `seeker/` dan `employer/`).
+
 ```text
 src/
 ├── app/
