@@ -185,4 +185,12 @@ export class SupabaseJobRepository implements JobRepository {
   async close(id: string): Promise<Job> {
     return this.update(id, { status: "CLOSED" });
   }
+
+  async delete(id: string): Promise<void> {
+    const supabase = await createClient();
+    const { error } = await supabase.from("jobs").delete().eq("id", id);
+    if (error) {
+      throw new Error(`Gagal menghapus lowongan: ${error.message}`);
+    }
+  }
 }

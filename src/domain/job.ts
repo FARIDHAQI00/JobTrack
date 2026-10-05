@@ -37,3 +37,27 @@ export interface JobFilters {
   employmentType?: EmploymentType;
   status?: JobStatus;
 }
+
+/**
+ * Input form lowongan dari Employer (dipakai service dan server action).
+ */
+export interface JobInput {
+  title: string;
+  description: string;
+  qualifications?: string;
+  category: string;
+  location: string;
+  employmentType: EmploymentType;
+  salaryMin?: number;
+  salaryMax?: number;
+}
+
+export const JOB_CATEGORIES = [
+  "Teknologi",
+  "Desain",
+  "Data",
+  "Marketing",
+  "SDM",
+  "Keuangan",
+  "Operasional",
+] as const;

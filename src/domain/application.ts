@@ -17,6 +17,7 @@ export interface Applicant {
   avatarUrl?: string;
   status: ApplicationStatus;
   appliedAt: string;
+  coverLetter?: string;
 }
 
 export interface PipelineStage {

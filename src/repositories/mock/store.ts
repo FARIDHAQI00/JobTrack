@@ -1,5 +1,7 @@
+import type { Company } from "@/domain/company";
 import type { SeekerProfile } from "@/domain/seeker-profile";
 import type { ApplicationStatus } from "@/domain/status";
+import { DEMO_ACCOUNTS } from "@/lib/auth/constants";
 
 export interface MockApplicationRecord {
   id: string;
@@ -22,16 +24,35 @@ export interface MockStore {
   applications: MockApplicationRecord[];
   savedJobs: MockSavedJobRecord[];
   seekerProfiles: Map<string, SeekerProfile>;
+  companies: Map<string, Company>;
   sequence: number;
 }
 
 const STORE_KEY = "__jobtrack_mock_store__";
 
 function createStore(): MockStore {
+  const companies = new Map<string, Company>();
+  const demoEmployer = DEMO_ACCOUNTS.find(
+    (account) => account.role === "EMPLOYER"
+  );
+
+  if (demoEmployer) {
+    companies.set(demoEmployer.id, {
+      id: "company-demo",
+      userId: demoEmployer.id,
+      name: demoEmployer.fullName,
+      description:
+        "Studio produk digital yang membantu perusahaan lokal bertumbuh lewat perangkat lunak yang rapi.",
+      location: "Jakarta",
+      website: "https://nusantara-digital.example",
+    });
+  }
+
   return {
     applications: [],
     savedJobs: [],
     seekerProfiles: new Map(),
+    companies,
     sequence: 1,
   };
 }

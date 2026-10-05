@@ -15,4 +15,5 @@ export interface JobRepository {
   create(draft: JobDraft): Promise<Job>;
   update(id: string, patch: Partial<JobDraft>): Promise<Job>;
   close(id: string): Promise<Job>;
+  delete(id: string): Promise<void>;
 }

@@ -1,20 +1,44 @@
-import type { ApplicationSummary } from "@/domain/application";
+import type { Applicant, ApplicationSummary } from "@/domain/application";
+import {
+  canTransitionStatus,
+  type ApplicationStatus,
+} from "@/domain/status";
 import type { ApplicationRepository } from "@/repositories/application-repository";
+import type { CompanyRepository } from "@/repositories/company-repository";
 import type { JobRepository } from "@/repositories/job-repository";
 
 export type ApplyResult = { ok: true } | { ok: false; error: string };
+export type UpdateStatusResult = { ok: true } | { ok: false; error: string };
+export type ApplicantListResult =
+  | { ok: true; applicants: Applicant[] }
+  | { ok: false; error: string };
 
 /**
  * Service use-case lamaran (backend.md §4, designpattern.md §3).
  *
  * Menjaga business rule (database.md §5): lowongan harus ada dan OPEN,
- * serta satu seeker hanya dapat melamar satu kali per lowongan.
+ * satu seeker hanya dapat melamar sekali per lowongan, hanya pemilik
+ * lowongan yang dapat mengubah status kandidat, dan transisi status
+ * mengikuti state transition yang sah.
  */
 export class ApplicationService {
   constructor(
     private readonly applications: ApplicationRepository,
-    private readonly jobs: JobRepository
+    private readonly jobs: JobRepository,
+    private readonly companies: CompanyRepository
   ) {}
+
+  private async isJobOwnedBy(
+    userId: string,
+    jobId: string
+  ): Promise<boolean> {
+    const company = await this.companies.getByUserId(userId);
+    if (!company) {
+      return false;
+    }
+    const job = await this.jobs.findById(jobId);
+    return Boolean(job && job.companyName === company.name);
+  }
 
   /**
    * Melamar sebuah lowongan.
@@ -62,5 +86,49 @@ export class ApplicationService {
    */
   listMyApplications(seekerId: string): Promise<ApplicationSummary[]> {
     return this.applications.findBySeeker(seekerId);
+  }
+
+  /**
+   * Daftar kandidat pada sebuah lowongan (khusus pemilik lowongan).
+   */
+  async listApplicantsForJob(
+    userId: string,
+    jobId: string
+  ): Promise<ApplicantListResult> {
+    if (!(await this.isJobOwnedBy(userId, jobId))) {
+      return { ok: false, error: "Lowongan tidak ditemukan." };
+    }
+    const applicants = await this.applications.findByJob(jobId);
+    return { ok: true, applicants };
+  }
+
+  /**
+   * Mengubah status kandidat (khusus pemilik lowongan).
+   *
+   * Transisi divalidasi dengan `canTransitionStatus` (domain/status).
+   */
+  async updateStatusForEmployer(
+    userId: string,
+    applicationId: string,
+    nextStatus: ApplicationStatus
+  ): Promise<UpdateStatusResult> {
+    const application = await this.applications.findById(applicationId);
+    if (!application) {
+      return { ok: false, error: "Lamaran tidak ditemukan." };
+    }
+
+    if (!(await this.isJobOwnedBy(userId, application.jobId))) {
+      return { ok: false, error: "Lamaran tidak ditemukan." };
+    }
+
+    if (!canTransitionStatus(application.status, nextStatus)) {
+      return {
+        ok: false,
+        error: "Perubahan status tersebut tidak diperbolehkan.",
+      };
+    }
+
+    await this.applications.updateStatus(applicationId, nextStatus);
+    return { ok: true };
   }
 }

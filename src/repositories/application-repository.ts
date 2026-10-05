@@ -13,6 +13,7 @@ export interface NewApplicationInput {
 export interface ApplicationRepository {
   findBySeeker(seekerId: string): Promise<ApplicationSummary[]>;
   findByJob(jobId: string): Promise<Applicant[]>;
+  findById(applicationId: string): Promise<ApplicationSummary | null>;
   create(input: NewApplicationInput): Promise<ApplicationSummary>;
   updateStatus(
     applicationId: string,

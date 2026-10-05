@@ -20,6 +20,7 @@ import { getSessionUser } from "@/lib/auth/service";
 import { formatDateID, formatSalaryRange } from "@/lib/format";
 import {
   getApplicationService,
+  getCompanyRepository,
   getJobRepository,
   getSavedJobRepository,
 } from "@/repositories";
@@ -54,6 +55,7 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
 
   const user = await getSessionUser();
   const isSeeker = user?.role === "JOB_SEEKER";
+  const company = await getCompanyRepository().findByName(job.companyName);
 
   const [saved, myApplications] = isSeeker
     ? await Promise.all([
@@ -119,11 +121,26 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
             <h2 className="font-heading text-xl font-semibold">
               Tentang {job.companyName}
             </h2>
-            <p className="leading-relaxed text-muted-foreground">
-              Profil perusahaan lengkap tersedia setelah backend Supabase
-              aktif. Untuk saat ini, lowongan ini diterbitkan oleh{" "}
-              {job.companyName} di {job.location}.
-            </p>
+            {company?.description ? (
+              <p className="leading-relaxed text-muted-foreground">
+                {company.description}
+              </p>
+            ) : (
+              <p className="leading-relaxed text-muted-foreground">
+                Lowongan ini diterbitkan oleh {job.companyName} di{" "}
+                {job.location}.
+              </p>
+            )}
+            {company?.website ? (
+              <a
+                href={company.website}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="w-fit text-sm font-medium text-primary hover:underline"
+              >
+                Kunjungi website perusahaan
+              </a>
+            ) : null}
           </section>
         </article>
 
