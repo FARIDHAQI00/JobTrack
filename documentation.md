@@ -71,3 +71,4 @@ Contoh keputusan yang sudah diambil:
 1. `Hosting Vercel → native Next.js + preview per PR → deployment menjadi bagian alur kerja harian`
 2. `Backend Supabase → Auth/PostgreSQL/RLS terkelola, mempercepat persistence → mock repository tetap dipertahankan sebagai fallback`
 3. `Docker tetap dibuat → requirement UTS + portabilitas demo → dua jalur delivery (Vercel dan Docker) harus dijaga konsisten`
+4. `Auth & repository dual-mode (Supabase / demo) → akun & Docker belum tersedia saat pengembangan → aplikasi tetap dapat didemokan; Supabase aktif otomatis lewat environment tanpa mengubah UI`
