@@ -1,0 +1,132 @@
+Summary,Issue Type,Priority,Epic Name,Epic Link,Sprint,Story Points,Labels,Description
+"Foundation & Deployment",Epic,High,Foundation & Deployment,,,,"p0 foundation devops","Scaffold project, setup Supabase dan Vercel, app shell dan role guard, repository abstraction dan mock, production deploy."
+"FD-01 — Scaffold project Next.js + TypeScript + Tailwind",Story,High,,Foundation & Deployment,Sprint 1,5,p0 foundation frontend,"AC: npm run dev berjalan; TypeScript strict; Tailwind aktif; struktur folder sesuai architecture.md; lint bersih."
+"FD-01 · Init Next.js App Router + TypeScript + Tailwind",Task,High,,Foundation & Deployment,Sprint 1,,foundation,
+"FD-01 · Setup ESLint + Prettier + script lint/typecheck",Task,High,,Foundation & Deployment,Sprint 1,,foundation,
+"FD-01 · Buat struktur folder components/features/lib/mocks",Task,High,,Foundation & Deployment,Sprint 1,,foundation,
+"FD-02 — Setup Supabase dev + migration awal",Story,High,,Foundation & Deployment,Sprint 1,3,p0 supabase,"AC: project dev aktif region Singapore; supabase/migrations berisi skema database.md; supabase start berjalan; seed tersedia."
+"FD-02 · Buat project Supabase dev",Task,High,,Foundation & Deployment,Sprint 1,,supabase,
+"FD-02 · Init Supabase CLI + config.toml",Task,High,,Foundation & Deployment,Sprint 1,,supabase,
+"FD-02 · Tulis migration awal semua tabel + enum",Task,High,,Foundation & Deployment,Sprint 1,,supabase,
+"FD-02 · Buat seed.sql data demo",Task,High,,Foundation & Deployment,Sprint 1,,supabase,
+"FD-03 — Setup Vercel + preview deployment",Story,High,,Foundation & Deployment,Sprint 1,2,p0 vercel devops,"AC: repo terhubung; push branch menghasilkan preview URL; env vars Preview dan Production terpasang; region functions sin1."
+"FD-03 · Import repo ke Vercel + set region sin1",Task,High,,Foundation & Deployment,Sprint 1,,vercel,
+"FD-03 · Tambah environment variables",Task,High,,Foundation & Deployment,Sprint 1,,vercel,
+"FD-03 · Verifikasi preview deployment pada satu PR",Task,High,,Foundation & Deployment,Sprint 1,,vercel,
+"FD-04 — App shell routing dan role guard",Story,High,,Foundation & Deployment,Sprint 1,3,p0 foundation,"AC: navbar tampil; route public/seeker/employer tersedia; middleware refresh session; akses lintas role ditolak."
+"FD-04 · Root layout + navbar responsif",Task,High,,Foundation & Deployment,Sprint 1,,foundation,
+"FD-04 · Middleware @supabase/ssr + role guard",Task,High,,Foundation & Deployment,Sprint 1,,supabase auth,
+"FD-04 · Halaman placeholder + redirect unauthorized",Task,High,,Foundation & Deployment,Sprint 1,,foundation,
+"FD-05 — Domain types + repository abstraction + mock",Story,High,,Foundation & Deployment,Sprint 1,3,p0 architecture,"AC: interface JobRepository dan ApplicationRepository; mock mengembalikan data demo; factory memilih implementasi via env; UI memakai repository."
+"FD-05 · Definisikan domain types + enum status",Task,High,,Foundation & Deployment,Sprint 1,,architecture,
+"FD-05 · Implementasi MockJobRepository + MockApplicationRepository",Task,High,,Foundation & Deployment,Sprint 1,,mock architecture,
+"FD-05 · Buat repository factory mock/supabase",Task,High,,Foundation & Deployment,Sprint 1,,architecture,
+"FD-06 — Production deployment + smoke test + rollback drill",Story,High,,Foundation & Deployment,Sprint 4,2,p0 vercel,"AC: migration dev ke production; deploy dari main sukses; smoke test production lolos; prosedur rollback diuji."
+"FD-06 · Push migration ke project production",Task,High,,Foundation & Deployment,Sprint 4,,supabase,
+"FD-06 · Merge ke main + smoke test production",Task,High,,Foundation & Deployment,Sprint 4,,vercel,
+"FD-06 · Uji rollback Vercel + catat evidence",Task,High,,Foundation & Deployment,Sprint 4,,vercel,
+"Authentication",Epic,Medium,Authentication,,,,"p1 auth","Login, register, logout via Supabase Auth + role guard."
+"US-01 — Login",Story,Medium,,Authentication,Sprint 2,3,p1 auth frontend,"AC: form tervalidasi; kredensial salah menampilkan error spesifik; sukses redirect sesuai role; session bertahan setelah refresh."
+"US-01 · Form login + validasi + loading/error state",Task,Medium,,Authentication,Sprint 2,,auth,
+"US-01 · Integrasi Supabase signInWithPassword",Task,Medium,,Authentication,Sprint 2,,auth supabase,
+"US-01 · Redirect berbasis role + proteksi route",Task,Medium,,Authentication,Sprint 2,,auth,
+"US-02 — Register",Story,Medium,,Authentication,Sprint 2,3,p1 auth frontend,"AC: pilihan role wajib; email duplikat ditolak; profiles otomatis dibuat; redirect sesuai role."
+"US-02 · Form register + pilih role",Task,Medium,,Authentication,Sprint 2,,auth,
+"US-02 · signUp + metadata role",Task,Medium,,Authentication,Sprint 2,,auth supabase,
+"US-02 · Trigger handle_new_user + verifikasi row profiles",Task,Medium,,Authentication,Sprint 2,,supabase,
+"US-03 — Logout",Story,Medium,,Authentication,Sprint 2,1,p1 auth frontend,"AC: session dihapus; redirect ke landing; route terproteksi tidak dapat diakses."
+"US-03 · Menu logout + signOut",Task,Medium,,Authentication,Sprint 2,,auth,
+"US-03 · Clear state + redirect",Task,Medium,,Authentication,Sprint 2,,auth,
+"Job Discovery",Epic,High,Job Discovery,,,,"p0 frontend","Listing, search, filter, detail lowongan."
+"US-04 — Melihat daftar lowongan",Story,High,,Job Discovery,Sprint 1,3,p0 jobs frontend,"AC: kartu menampilkan judul/company/lokasi/tipe; hanya job OPEN; loading skeleton dan empty state; data dari repository."
+"US-04 · JobCard + JobList",Task,High,,Job Discovery,Sprint 1,,jobs,
+"US-04 · Loading skeleton + empty state",Task,High,,Job Discovery,Sprint 1,,jobs,
+"US-04 · Ambil data via repository",Task,High,,Job Discovery,Sprint 1,,jobs architecture,
+"US-05 — Mencari lowongan",Story,High,,Job Discovery,Sprint 1,2,p0 jobs frontend,"AC: pencarian kata kunci bekerja; state tersinkron dengan URL query; input kosong mengembalikan semua."
+"US-05 · SearchBar + debounce",Task,High,,Job Discovery,Sprint 1,,jobs,
+"US-05 · Sinkron query param q",Task,High,,Job Discovery,Sprint 1,,jobs,
+"US-05 · Filter logic + unit test",Task,High,,Job Discovery,Sprint 1,,jobs testing,
+"US-06 — Memfilter lowongan",Story,High,,Job Discovery,Sprint 1,3,p0 jobs frontend,"AC: filter kategori/lokasi/tipe bekerja; dapat dikombinasikan dengan pencarian; dapat direset; tersinkron URL."
+"US-06 · Komponen filter + state",Task,High,,Job Discovery,Sprint 1,,jobs,
+"US-06 · Kombinasi filter + search",Task,High,,Job Discovery,Sprint 1,,jobs,
+"US-06 · Reset + sinkron URL",Task,High,,Job Discovery,Sprint 1,,jobs,
+"US-07 — Melihat detail lowongan",Story,High,,Job Discovery,Sprint 1,2,p0 jobs frontend,"AC: menampilkan deskripsi, company, lokasi, tipe, gaji; tombol apply/save sesuai role; 404 bila tidak ditemukan atau ditutup."
+"US-07 · Halaman detail + layout",Task,High,,Job Discovery,Sprint 1,,jobs,
+"US-07 · Data company + detail job",Task,High,,Job Discovery,Sprint 1,,jobs,
+"US-07 · CTA apply/save + state",Task,High,,Job Discovery,Sprint 1,,jobs,
+"Job Seeker",Epic,High,Job Seeker,,,,"p0 seeker","Saved jobs, apply, status lamaran, riwayat, profil."
+"US-08 — Menyimpan lowongan",Story,Medium,,Job Seeker,Sprint 2,2,p1 seeker frontend,"AC: toggle save/unsave; hanya untuk user login; halaman saved menampilkan daftar; hapus dari saved berfungsi."
+"US-08 · Tombol save + optimistic UI",Task,Medium,,Job Seeker,Sprint 2,,seeker,
+"US-08 · Halaman saved jobs",Task,Medium,,Job Seeker,Sprint 2,,seeker,
+"US-08 · Repository saved + RLS policy",Task,Medium,,Job Seeker,Sprint 2,,supabase,
+"US-09 — Melamar lowongan",Story,High,,Job Seeker,Sprint 2,3,p0 seeker frontend,"AC: tombol apply tersedia pada job OPEN; tidak bisa apply dua kali; status awal APPLIED; muncul di dashboard dan feedback sukses."
+"US-09 · Form apply (cover letter)",Task,High,,Job Seeker,Sprint 2,,seeker,
+"US-09 · Validasi apply ganda + job CLOSED di server",Task,High,,Job Seeker,Sprint 2,,seeker supabase,
+"US-09 · Feedback sukses/gagal",Task,High,,Job Seeker,Sprint 2,,seeker ux,
+"US-10 — Melihat status lamaran",Story,High,,Job Seeker,Sprint 2,2,p0 seeker frontend,"AC: status tampil jelas bukan hanya warna; timeline mengikuti transisi; update employer tercermin."
+"US-10 · ApplicationStatusBadge + ApplicationTimeline",Task,High,,Job Seeker,Sprint 2,,seeker,
+"US-10 · Sinkron data status terbaru",Task,High,,Job Seeker,Sprint 2,,seeker supabase,
+"US-11 — Melihat riwayat lamaran",Story,High,,Job Seeker,Sprint 2,2,p0 seeker frontend,"AC: daftar semua lamaran; dapat difilter status; detail per lamaran dapat dibuka."
+"US-11 · Halaman applications + list",Task,High,,Job Seeker,Sprint 2,,seeker,
+"US-11 · Filter status + detail",Task,High,,Job Seeker,Sprint 2,,seeker,
+"US-12 — Mengelola profil",Story,Medium,,Job Seeker,Sprint 2,3,p1 seeker frontend,"AC: form profil nama/headline/bio/lokasi/telepon; validasi; perubahan tersimpan dan tampil; upload CV masuk P2."
+"US-12 · Form profil + validasi",Task,Medium,,Job Seeker,Sprint 2,,seeker,
+"US-12 · Simpan profil via Supabase",Task,Medium,,Job Seeker,Sprint 2,,seeker supabase,
+"US-12 · Tampilkan data profil",Task,Medium,,Job Seeker,Sprint 2,,seeker,
+"Employer",Epic,High,Employer,,,,"p0 employer","Dashboard, job management, applicants, status kandidat, company profile."
+"US-13 — Dashboard employer",Story,High,,Employer,Sprint 3,5,p0 employer frontend,"AC: KPI aktif jobs/applications/candidates; pipeline ringkas; recent applications; data hanya milik company sendiri."
+"US-13 · KPIStatCard + layout dashboard",Task,High,,Employer,Sprint 3,,employer,
+"US-13 · Query agregat company",Task,High,,Employer,Sprint 3,,employer supabase,
+"US-13 · HiringPipeline + recent applications",Task,High,,Employer,Sprint 3,,employer,
+"US-14 — Membuat lowongan",Story,High,,Employer,Sprint 3,5,p0 employer frontend,"AC: form lengkap dan tervalidasi; tersimpan OPEN; muncul di listing; hanya employer dengan company profile."
+"US-14 · Form create job + validasi",Task,High,,Employer,Sprint 3,,employer,
+"US-14 · Simpan job + redirect",Task,High,,Employer,Sprint 3,,employer supabase,
+"US-14 · E2E create lalu tampil di listing",Task,High,,Employer,Sprint 3,,employer testing,
+"US-15 — Mengubah lowongan",Story,High,,Employer,Sprint 3,3,p0 employer frontend,"AC: form terisi data lama; perubahan tersimpan; hanya pemilik; job CLOSED tetap dapat diedit."
+"US-15 · Halaman edit + prefill",Task,High,,Employer,Sprint 3,,employer,
+"US-15 · Update + validasi kepemilikan",Task,High,,Employer,Sprint 3,,employer supabase,
+"US-16 — Menutup/menghapus lowongan",Story,High,,Employer,Sprint 3,2,p0 employer frontend,"AC: close mengubah status CLOSED; konfirmasi sebelum hapus; job CLOSED hilang dari listing publik dan menolak apply."
+"US-16 · Aksi close + konfirmasi dialog",Task,High,,Employer,Sprint 3,,employer,
+"US-16 · Aksi delete + konfirmasi",Task,High,,Employer,Sprint 3,,employer,
+"US-16 · Sinkron listing publik",Task,High,,Employer,Sprint 3,,employer,
+"US-17 — Melihat kandidat",Story,High,,Employer,Sprint 3,3,p0 employer frontend,"AC: tabel kandidat per job; kolom nama/status/tanggal; hanya job milik company; state kosong jelas."
+"US-17 · Halaman applicants + tabel responsif",Task,High,,Employer,Sprint 3,,employer,
+"US-17 · Query per job + kepemilikan",Task,High,,Employer,Sprint 3,,employer supabase,
+"US-17 · Detail kandidat",Task,High,,Employer,Sprint 3,,employer,
+"US-18 — Mengubah status kandidat",Story,High,,Employer,Sprint 3,3,p0 employer frontend,"AC: transisi valid APPLIED-SCREENING-INTERVIEW-ACCEPTED/REJECTED; tercermin di dashboard seeker; feedback sukses; tidak bisa ubah job orang lain."
+"US-18 · Kontrol ubah status + validasi transisi",Task,High,,Employer,Sprint 3,,employer,
+"US-18 · Server action + RLS policy",Task,High,,Employer,Sprint 3,,employer supabase,
+"US-18 · Unit test transisi status",Task,High,,Employer,Sprint 3,,testing,
+"US-19 — Mengelola profil perusahaan",Story,Medium,,Employer,Sprint 3,3,p1 employer frontend,"AC: form company nama/deskripsi/lokasi/website; tampil di detail job; satu company per employer."
+"US-19 · Form company profile",Task,Medium,,Employer,Sprint 3,,employer,
+"US-19 · Simpan + tampilkan di job detail",Task,Medium,,Employer,Sprint 3,,employer supabase,
+"Shared UI/UX",Epic,High,Shared UI/UX,,,,"p0 ux","Navigasi konsisten, feedback action, layout responsif."
+"US-20 — Navigasi konsisten",Story,High,,Shared UI/UX,Sprint 4,3,p0 ux frontend,"AC: active state benar; struktur navigasi sama di semua halaman; menu role tidak saling bocor; mobile nav berfungsi."
+"US-20 · Audit navigasi + active state",Task,High,,Shared UI/UX,Sprint 4,,ux,
+"US-20 · Mobile nav + aksesibilitas keyboard",Task,High,,Shared UI/UX,Sprint 4,,ux a11y,
+"US-21 — Feedback action",Story,High,,Shared UI/UX,Sprint 2,2,p0 ux frontend,"AC: toast sukses/gagal; dialog konfirmasi aksi destruktif; tombol loading mencegah double submit."
+"US-21 · Toast system (shadcn/ui)",Task,High,,Shared UI/UX,Sprint 2,,ux,
+"US-21 · Konfirmasi dialog + loading button",Task,High,,Shared UI/UX,Sprint 2,,ux,
+"US-22 — Layout responsif",Story,High,,Shared UI/UX,Sprint 1,3,p0 ux frontend,"AC: diuji di mobile/tablet/desktop; tabel dapat diakses di mobile; tidak ada horizontal scroll yang tidak disengaja."
+"US-22 · Audit 3 breakpoint",Task,High,,Shared UI/UX,Sprint 1,,ux,
+"US-22 · Perbaiki tabel/list mobile",Task,High,,Shared UI/UX,Sprint 1,,ux,
+"Docker & Documentation",Epic,High,Docker & Documentation,,,,"ops docs","Docker image UTS, README, evidence, presentation, testing setup."
+"OPS-01 — Dockerfile + build + tag UTS + push",Story,High,,Docker & Documentation,Sprint 4,3,p0 docker,"AC: Dockerfile root multi-stage; image berjalan; tag berakhiran -UTS; push sukses; public repo; link di README."
+"OPS-01 · Dockerfile + .dockerignore",Task,High,,Docker & Documentation,Sprint 4,,docker,
+"OPS-01 · Build + run lokal",Task,High,,Docker & Documentation,Sprint 4,,docker,
+"OPS-01 · Tag v1-UTS + push + verifikasi public",Task,High,,Docker & Documentation,Sprint 4,,docker,
+"OPS-02 — README final + link Docker Hub + live URL",Story,High,,Docker & Documentation,Sprint 4,3,p0 docs,"AC: README memuat deskripsi, fitur, stack, setup, live URL, Docker Hub, repo, team, link dokumentasi."
+"OPS-02 · Tulis README final",Task,High,,Docker & Documentation,Sprint 4,,docs,
+"OPS-02 · Verifikasi semua link",Task,High,,Docker & Documentation,Sprint 4,,docs,
+"OPS-03 — Decision log + evidence collection",Story,Medium,,Docker & Documentation,Sprint 4,1,p1 docs,"AC: keputusan teknis tercatat; evidence-checklist terisi; screenshot tersimpan di docs/evidence."
+"OPS-03 · Update decision log",Task,Medium,,Docker & Documentation,Sprint 4,,docs,
+"OPS-03 · Kumpulkan screenshot Scrum/Vercel/Supabase/Docker",Task,Medium,,Docker & Documentation,Sprint 4,,docs evidence,
+"OPS-04 — Presentation deck + demo script",Story,High,,Docker & Documentation,Sprint 4,3,p0 presentation,"AC: slide lengkap sesuai presentation-checklist; demo script dua role; latihan dua anggota."
+"OPS-04 · Susun slide deck",Task,High,,Docker & Documentation,Sprint 4,,presentation,
+"OPS-04 · Demo script + rehearsal",Task,High,,Docker & Documentation,Sprint 4,,presentation,
+"OPS-05 — Setup testing (Vitest + Testing Library)",Story,Medium,,Docker & Documentation,Sprint 2,2,p1 testing,"AC: npm test berjalan; minimal unit test filter job, transisi status, role guard; lint aman."
+"OPS-05 · Setup Vitest + Testing Library",Task,Medium,,Docker & Documentation,Sprint 2,,testing,
+"OPS-05 · Unit test filter/status/guard",Task,Medium,,Docker & Documentation,Sprint 2,,testing,
+"P2-01 — Upload CV via Supabase Storage",Story,Low,,Job Seeker,,3,p2 storage,"Belum dijadwalkan; aktifkan jika MVP selesai."
+"P2-02 — Email notification perubahan status",Story,Low,,Job Seeker,,5,p2 notification,"Belum dijadwalkan; aktifkan jika MVP selesai."
+"P2-03 — Analytics tambahan employer",Story,Low,,Employer,,3,p2 analytics,"Belum dijadwalkan; aktifkan jika MVP selesai."
