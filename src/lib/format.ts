@@ -5,6 +5,22 @@ const compactRupiah = new Intl.NumberFormat("id-ID", {
   maximumFractionDigits: 1,
 });
 
+const longDate = new Intl.DateTimeFormat("id-ID", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+
+/**
+ * Memformat tanggal ISO ke format Indonesia (contoh: "3 Oktober 2026").
+ *
+ * @param iso Tanggal dalam format ISO 8601.
+ * @returns Tanggal yang ramah dibaca.
+ */
+export function formatDateID(iso: string): string {
+  return longDate.format(new Date(iso));
+}
+
 /**
  * Memformat rentang gaji ke Rupiah ringkas.
  *

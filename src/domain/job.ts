@@ -19,6 +19,8 @@ export interface Job {
   id: string;
   title: string;
   companyName: string;
+  description: string;
+  qualifications?: string;
   location: string;
   employmentType: EmploymentType;
   category?: string;
@@ -26,4 +28,12 @@ export interface Job {
   salaryMax?: number;
   status: JobStatus;
   postedAt?: string;
+}
+
+export interface JobFilters {
+  query?: string;
+  category?: string;
+  location?: string;
+  employmentType?: EmploymentType;
+  status?: JobStatus;
 }
