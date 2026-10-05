@@ -77,6 +77,8 @@ supabase/
 └── seed.sql
 ```
 
+Catatan auth: `src/lib/auth/` menyediakan service dual-mode. Saat environment Supabase tersedia, auth memakai Supabase Auth; saat belum, aplikasi berjalan pada mode demo (akun simulasi dari `supabase/seed.sql`) sehingga UI dan demo tidak menunggu backend (architecture.md §8).
+
 ## 4. Layer Responsibility
 
 - `app/`: routing dan page composition.

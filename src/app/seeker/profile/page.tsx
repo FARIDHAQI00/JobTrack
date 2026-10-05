@@ -1,14 +1,69 @@
 import type { Metadata } from "next";
-import { PagePlaceholder } from "@/components/shared/page-placeholder";
+import { redirect } from "next/navigation";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { ProfileForm } from "@/features/seeker/components/profile-form";
+import { seekerProfileCompleteness } from "@/domain/seeker-profile";
+import { getSessionUser } from "@/lib/auth/service";
+import { getSeekerProfileRepository } from "@/repositories";
 
 export const metadata: Metadata = { title: "Profil Saya" };
 
-export default function SeekerProfilePage() {
+export default async function SeekerProfilePage() {
+  const user = await getSessionUser();
+  if (!user || user.role !== "JOB_SEEKER") {
+    redirect("/login");
+  }
+
+  const profile = await getSeekerProfileRepository().getByUserId(user.id);
+  const completeness = seekerProfileCompleteness(profile);
+
   return (
-    <PagePlaceholder
-      title="Profil Saya"
-      description="Pengelolaan profil pelamar dikerjakan pada Sprint 2."
-      sprint="Sprint 2 - US-12"
-    />
+    <div className="grid gap-6">
+      <header className="grid gap-1">
+        <h1 className="font-heading text-2xl font-semibold tracking-tight">
+          Profil Saya
+        </h1>
+        <p className="text-muted-foreground">
+          Profil yang lengkap membantu employer mengenalimu lebih cepat.
+        </p>
+      </header>
+
+      <div className="grid gap-6 lg:grid-cols-[1fr_300px]">
+        <Card>
+          <CardHeader>
+            <CardTitle>Data Pelamar</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="mb-5 grid gap-1 rounded-xl bg-muted/60 px-4 py-3">
+              <span className="text-sm text-muted-foreground">
+                Email akun
+              </span>
+              <span className="font-medium">{user.email}</span>
+            </div>
+            <ProfileForm defaultProfile={profile} />
+          </CardContent>
+        </Card>
+
+        <Card className="h-fit">
+          <CardHeader>
+            <CardTitle>Kelengkapan Profil</CardTitle>
+          </CardHeader>
+          <CardContent className="grid gap-3">
+            <span className="font-heading text-3xl font-semibold tabular-nums">
+              {completeness}%
+            </span>
+            <Progress
+              value={completeness}
+              aria-label={`Kelengkapan profil ${completeness}%`}
+            />
+            <p className="text-sm text-muted-foreground">
+              Isi nama, headline, bio, lokasi, dan telepon agar profilmu tampil
+              utuh di mata employer.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
   );
 }
