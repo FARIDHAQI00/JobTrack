@@ -19,24 +19,28 @@ Requirement tugas mewajibkan design pattern didokumentasikan. Untuk React/Next.j
 - menerima props
 - tidak mengetahui detail data source
 
+Adaptasi App Router (React Server Components): container = Server Component
+(page / layout) yang memanggil service/repository; presenter = komponen
+`components/` dan `features/*/components/` yang menerima props. Interaksi
+client diisolasi oleh hook (lihat bagian B).
+
 Contoh struktur:
 
 ```text
-JobListContainer
-   └── JobListPresenter
-          ├── JobCard
-          └── JobFilter
+app/(public)/jobs/page.tsx          <- container (fetch + filter)
+   └── JobCard (presenter)
+          ├── StatusBadge
+          └── JobFilterPanel (client, props dari container)
 ```
 
 ### B. Hooks Pattern
 
-Custom hook mengenkapsulasi reusable UI logic.
+Custom hook mengenkapsulasi reusable UI logic. Implementasi aktual:
 
-Contoh:
-- `useJobs()`
-- `useApplications()`
-- `useAuth()`
-- `useJobForm()`
+- `useSavedJobToggle` — `src/hooks/use-saved-job.ts` (dipakai `SaveJobButton`)
+- `useApplyToJob` — `src/hooks/use-apply-to-job.ts` (dipakai `ApplyDialog`)
+
+Hook menangani state pending, pemanggilan server action, toast feedback, dan refresh data; komponen tetap presentasional. Verifikasi lengkap: `docs/design-pattern-verification.md`.
 
 ### C. Repository Pattern
 

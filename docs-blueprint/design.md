@@ -159,7 +159,7 @@ Do not create charts only for decoration.
 
 Rules from the Taste skill workflow, applied to JobTrack:
 
-- No AI-purple gradients, no neon glows, no glassmorphism everywhere.
+- Violet is the intentional JobTrack brand color; avoid generic full-page violet gradients, neon glows, and glassmorphism everywhere.
 - One accent color, locked across the whole product.
 - Cards only where elevation communicates hierarchy; dense areas use dividers and whitespace instead.
 - One corner-radius system (§7), no mixed button/card shapes.
@@ -218,33 +218,34 @@ Palette final ditetapkan dari workflow UI UX Pro Max (verified palette match) da
 
 | Token | Value | Usage |
 |---|---|---|
-| `--background` | `#F0F9FF` | Page background |
-| `--foreground` | `#0C4A6E` | Primary text |
+| `--background` | `#FAF8FD` | Warm off-white/lilac page background |
+| `--foreground` | `#241D30` | Primary text |
 | `--card` | `#FFFFFF` | Card/panel surface |
-| `--card-foreground` | `#0C4A6E` | Text on card |
-| `--primary` | `#0369A1` | Primary action, links, active nav |
-| `--on-primary` | `#FFFFFF` | Text on primary |
-| `--secondary` | `#0EA5E9` | Secondary accent, info, chart series |
-| `--muted` | `#E7EFF5` | Muted surface |
-| `--muted-foreground` | `#475569` | Secondary text |
-| `--border` | `#BAE6FD` | Subtle border |
-| `--ring` | `#0369A1` | Visible focus ring |
-| `--cta` | `#16A34A` | Positive CTA (Apply/Post) |
-| `--on-cta` | `#000000` | Text on green CTA (AA contrast) |
+| `--card-foreground` | `#241D30` | Text on card |
+| `--primary` | `#7040D8` | Primary action, links, active nav |
+| `--primary-foreground` | `#FFFFFF` | Text on primary |
+| `--secondary` | `#F1ECF8` | Secondary lavender surface |
+| `--muted` | `#F1ECF8` | Muted surface |
+| `--muted-foreground` | `#706A79` | Secondary text |
+| `--border` | `#E7E0EF` | Subtle lavender border |
+| `--ring` | `#7040D8` | Visible focus ring |
+| `--cta` | `#7040D8` | Primary CTA (Apply/Post) |
+| `--cta-foreground` | `#FFFFFF` | Text on primary CTA |
+| `--warm-tint` | `#F5E8E2` | Decorative warm tint, background only |
 | `--destructive` | `#DC2626` | Error, destructive action |
-| `--on-destructive` | `#FFFFFF` | Text on destructive |
+| `--destructive-foreground` | `#FFFFFF` | Text on destructive |
 
-Verified contrast (WCAG AA, min 4.5:1): foreground/background 8.9:1, on-primary/primary 5.9:1, muted-foreground/card 7.5:1, on-cta/cta 6.4:1.
+Maintain WCAG AA contrast: at least 4.5:1 for normal text and 3:1 for large text and essential non-text controls. Recheck actual token pairs after visual tuning.
 
 ### 5.2 Application Status (semantic)
 
-| Status | Badge background | Text | Dot |
+| Status | Badge background | Text |
 |---|---|---|---|
-| APPLIED | `#E0F2FE` | `#075985` | `#0EA5E9` |
-| SCREENING | `#FEF3C7` | `#92400E` | `#D97706` |
-| INTERVIEW | `#EDE9FE` | `#5B21B6` | `#7C3AED` |
-| ACCEPTED | `#DCFCE7` | `#166534` | `#16A34A` |
-| REJECTED | `#FEE2E2` | `#991B1B` | `#DC2626` |
+| APPLIED | `#F1EDF4` | `#695D77` |
+| SCREENING | `#FBF3DF` | `#8A601A` |
+| INTERVIEW | `#EEE8FA` | `#6035B5` |
+| ACCEPTED | `#E7F4EB` | `#28684A` |
+| REJECTED | `#F7E9EC` | `#A33E51` |
 
 Rules:
 
@@ -255,17 +256,18 @@ Rules:
 
 | Role | Text/Icon | Surface |
 |---|---|---|
-| success | `#15803D` | `#F0FDF4` |
-| warning | `#B45309` | `#FFFBEB` |
+| success | `#28684A` | `#E7F4EB` |
+| warning | `#8D621C` | `#FBF3E1` |
 | error | `#DC2626` | `#FEF2F2` |
-| info | `#0369A1` | `#F0F9FF` |
+| info | `#59418E` | `#F0EBF7` |
 
 ### 5.4 Rules
 
-- One accent color per product; the green CTA is the only positive action accent.
+- Violet is the product accent for actions and focus; green remains reserved for semantic success states.
 - No hardcoded colors in components. Everything goes through tokens.
-- Banned: AI-purple gradients, neon outer glows, pure black `#000000` text/shadows.
-- Dark mode: semantic tokens are structured for it, but the toggle is P2 (decision D-07, §16). MVP ships light mode only.
+- Use lavender/peach ambient washes and a faint geometric texture selectively; keep operational screens calm and legible.
+- Avoid generic full-page purple gradients, neon outer glows, and pure black `#000000` text/shadows.
+- Dark mode: coherent semantic tokens exist, but no toggle is in MVP scope (decision D-07, §16). Light remains the shipped default.
 
 ## 6. Typography
 
@@ -320,7 +322,7 @@ Base token `--radius: 12px`.
 
 ### Elevation
 
-- Cards: subtle blue-tinted shadow, e.g. `0 1px 2px rgba(12, 74, 110, 0.06)`.
+- Cards: compact, defined plum-tinted shadow, e.g. `0 4px 12px rgba(35, 24, 50, 0.13)`.
 - Modals/popovers only: stronger shadow; never pure-black drop shadows on light surfaces.
 
 Do not tune every margin independently.
@@ -489,18 +491,18 @@ Use subtle transitions for:
 
 | Purpose | Example | Duration | Easing |
 |---|---|---|---|
-| Feedback | button press (`scale 0.98`), save toggle | 120–150ms | ease-out |
-| State change | status badge/timeline update, toast | 200ms | cubic-bezier(0.16, 1, 0.3, 1) |
-| Orientation | modal/dialog enter, page section reveal | 250–300ms | cubic-bezier(0.16, 1, 0.3, 1) |
+| Feedback | button press, save toggle, focus/hover | 160–200ms | ease-out |
+| State change | status badge/timeline update, toast | 180–220ms | cubic-bezier(0.16, 1, 0.3, 1) |
+| Orientation | modal/dialog enter, selected public content | 200–240ms | cubic-bezier(0.16, 1, 0.3, 1) |
 
 Rules:
 
 - High-frequency actions (hover, typing, nav clicks) are instant or near-instant; no decorative animation on repeat interactions.
 - Animate only `transform` and `opacity`. Never `transition: all`, never animate width/height/top/left.
-- Never use `window.addEventListener("scroll")`; use Motion `whileInView`, `useScroll`, or IntersectionObserver.
+- Use CSS transitions and existing `tw-animate-css` utilities; do not add an animation library for this redesign.
 - Exit transitions are faster than enter transitions.
 - `prefers-reduced-motion: reduce` disables non-essential motion everywhere.
-- Motion library: Motion (`motion/react`). GSAP only for a justified landing-page moment, if ever.
+- Use no parallax, scroll hijacking, or perpetual decorative animation.
 - Every animation must be explainable in one sentence (hierarchy / storytelling / feedback / state transition).
 
 ## 13. Reference Image Rule
@@ -595,14 +597,14 @@ Persisted design system: `design-system/jobtrack/MASTER.md`.
 
 ### Design Read
 
-"Reading this as: B2B/product SaaS portal for job seekers and employers, with a trust-first professional language, leaning toward shadcn/ui + Tailwind, Poppins/Open Sans, blue primary + green CTA."
+"Reading this as: B2B job portal for job seekers and employers, with a trust-first professional language, leaning toward shadcn/ui + Tailwind, Poppins/Open Sans, a restrained lavender/violet identity, layered neutral surfaces, and feedback-first motion."
 
 ### Design Dials
 
 | Dial | Value | Reason |
 |---|---|---|
-| Layout variance | 4/10 | Dashboard product; balanced, low asymmetry, no artsy layouts |
-| Motion intensity | 3/10 | Feedback-first; subtle, no decorative motion |
+| Layout variance | 5/10 | Dashboard product; balanced layouts with selected asymmetry on public pages |
+| Motion intensity | 3/10 | Feedback-first; short, subtle transitions, no perpetual motion |
 | Visual density | 6/10 | Daily-app density; dashboards denser than public pages but breathable |
 
 ### Key UX Decisions (from search results)
@@ -696,7 +698,7 @@ Phase 4 (Sprint Implementation) per `roadmap.md`. Screen specs are in §17.
 ### 17.3 Shared Layout Patterns
 
 - **App shell:** compact top nav, max height 72px. Desktop shows search input and avatar menu; mobile collapses nav into a `Sheet` hamburger. One line at desktop.
-- **Page header:** title/greeting left, primary action right. No eyebrow labels.
+- **Page header:** title/greeting left, primary action right. Small eyebrow labels are optional and limited to one per three content sections.
 - **Dashboard grid:** CSS Grid 12 kolom. KPI row: 4-up (xl), 2-up (sm), 1-up (mobile). Charts/panels span 6–8, feed spans 4.
 - **List pattern:** job cards for discovery; data tables for applicants (desktop) collapsing to stacked `ApplicantRow` (mobile).
 - **Filter bar:** chips wrap (`flex-wrap`, never clipped). Mobile: visible filter button opening a `Sheet` with active-filter count.
@@ -710,30 +712,34 @@ Notation: `[ ]` component, `…` repeating content. All copy in Bahasa Indonesia
 
 #### 1. Landing (`/`)
 
-Marketplace/Directory pattern (verified): search-first hero.
+Marketplace pattern: centered search-first hero in a rounded lavender mesh panel, followed by a live JobTrack opportunity-board preview.
 
 ```text
-┌────────────────────────────────────────────────────────────┐
-│ [JobTrack]   Lowongan                    Masuk   [Daftar]  │
-├────────────────────────────────────────────────────────────┤
-│  Temukan pekerjaan yang tepat untukmu                      │
-│  [ 🔍 Cari posisi, perusahaan, atau kota… ]     [Cari]      │
-│  Populer: [Teknologi] [Desain] [Data] [Marketing]          │
-├────────────────────────────────────────────────────────────┤
-│  Lowongan terbaru                                          │
-│  [JobCard] [JobCard] [JobCard]                             │
-│  [Lihat semua lowongan]                                    │
-├────────────────────────────────────────────────────────────┤
-│  Untuk Employer: pasang lowongan dalam hitungan menit      │
-│  [Buat Lowongan]                                           │
-├────────────────────────────────────────────────────────────┤
-│  Footer: tautan, tim, dokumentasi                          │
-└────────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────┐
+│    [JobTrack]       Home   Lowongan   ...           [Daftar]    │  pill nav
+│                                                                │
+│          [Peluang karier, satu tempat]                         │
+│     Temukan pekerjaan impian dan                               │
+│          rencanakan langkah berikutnya.                        │
+│          [Cari posisi/perusahaan/kota] [Cari]                  │
+│                 [Cara kerja] [kategori aktual]                 │
+│                                                                │
+│ ┌────────────────────────────────────────────────────────────┐ │
+│ │ Lowongan aktif: [jumlah aktual]      Peluang yang dibuka    │ │
+│ │ [JobCard aktual] [JobCard aktual]    Kategori aktual        │ │
+│ └────────────────────────────────────────────────────────────┘ │
+├────────────────────────────────────────────────────────────────┤
+│ Dari pencarian sampai kabar terbaru: 01 → 02 → 03              │
+├────────────────────────────────────────────────────────────────┤
+│ Peluang terbaru lainnya: [JobCard] [JobCard]                  │
+├────────────────────────────────────────────────────────────────┤
+│ Untuk perusahaan: kelola lowongan dan kandidat [Buat akun]    │
+└────────────────────────────────────────────────────────────────┘
 ```
 
-- **Components:** JobCard, Button, Input, Badge (kategori).
-- **Responsive:** hero search full-width mobile; kartu 1 kolom mobile, 2 tablet, 3 desktop.
-- **States:** skeleton kartu saat loading; pencarian tanpa hasil menampilkan saran kategori (bukan layar kosong).
+- **Components:** capsule site navigation, Button, Input, category links, actual `JobCard` components and live `openJobs` data.
+- **Responsive:** headline/search stack on mobile; opportunity preview moves below the hero copy and uses 1 column mobile, 2 columns on wide screens.
+- **States:** when no open jobs exist, show a direct empty state; do not invent sample cards or social-proof metrics.
 
 #### 2. Job Listing (`/jobs`)
 
@@ -741,7 +747,7 @@ Marketplace/Directory pattern (verified): search-first hero.
 ┌────────────────────────────────────────────────────────────┐
 │ [JobTrack]   Lowongan        [ 🔍 cari… ]      [Masuk]     │
 ├───────────────┬────────────────────────────────────────────┤
-│ Filter        │  24 lowongan          [Terbaru ▾]          │
+│ Filter        │  [Jumlah aktual] lowongan ditemukan        │
 │ Kategori      │  ┌──────────────────────────────────────┐  │
 │ [chips…]      │  │ [JobCard]                            │  │
 │ Lokasi        │  ├──────────────────────────────────────┤  │

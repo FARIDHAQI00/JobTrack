@@ -4,8 +4,8 @@ Mini job portal berbasis web yang mempertemukan **Job Seeker** dan **Employer**:
 
 | Informasi | Nilai |
 |---|---|
-| Live URL | _menyusul setelah deploy Vercel_ (`vercel.md`) |
-| Docker Hub | _menyusul setelah push_ `<dockerhub-username>/jobtrack:v1-UTS` (`docker.md`) |
+| Live URL | https://job-track-ivory-omega.vercel.app (`docs-blueprint/vercel.md`) |
+| Docker Hub | [faridhaqi/jobtrack:v1-UTS](https://hub.docker.com/r/faridhaqi/jobtrack) — `docker pull faridhaqi/jobtrack:v1-UTS` (`docs-blueprint/docker.md`) |
 | Demo mode | Tanpa konfigurasi Supabase, aplikasi berjalan dengan data & akun demo |
 
 ## Fitur
@@ -65,21 +65,21 @@ supabase start               # butuh Docker
 supabase db reset            # jalankan migration + seed
 ```
 
-Detail: `supabase.md` (auth, RLS, migration, storage).
+Detail: `docs-blueprint/supabase.md` (auth, RLS, migration, storage).
 
 ## Docker
 
 ```bash
-docker build -t <dockerhub-username>/jobtrack:v1-UTS .
+docker build -t faridhaqi/jobtrack:v1-UTS .
 docker run --rm -p 3000:3000 \
   -e NEXT_PUBLIC_SUPABASE_URL=... \
   -e NEXT_PUBLIC_SUPABASE_ANON_KEY=... \
-  <dockerhub-username>/jobtrack:v1-UTS
+  faridhaqi/jobtrack:v1-UTS
 
-docker push <dockerhub-username>/jobtrack:v1-UTS
+docker push faridhaqi/jobtrack:v1-UTS
 ```
 
-Tag wajib berakhiran `-UTS`; tanpa env Supabase image berjalan pada demo mode. Detail: `docker.md`.
+Tag wajib berakhiran `-UTS`; tanpa env Supabase image berjalan pada demo mode. Detail: `docs-blueprint/docker.md`.
 
 ## Struktur Singkat
 
@@ -92,23 +92,24 @@ src/
 ├── repositories/       # kontrak + mock + supabase
 ├── services/           # JobService, ApplicationService
 └── lib/                # auth, supabase, filters, format
-supabase/               # config, migrations, seed
+supabase/               # config, migrations, seed, tests
 docs/                   # backlog, sprint, presentasi, evidence
+docs-blueprint/         # dokumen blueprint & panduan (prd, arsitektur, deployment)
 ```
 
 ## Dokumentasi
 
 | Dokumen | Isi |
 |---|---|
-| `prd.md` | Product requirement, user story, prioritas |
-| `architecture.md` | Arsitektur, folder, deployment topology |
-| `database.md` | Skema, relasi, RLS |
-| `design.md` | Design system, token, wireframe 14 layar |
-| `designpattern.md` | Container-Presenter, Hooks, Repository, OOP service |
-| `roadmap.md` | Phase 0-7 dan pembagian sprint |
-| `git.md` | Branch naming dan commit convention |
-| `docker.md` / `vercel.md` / `supabase.md` | Panduan deployment |
-| `testing.md` / `jira.md` | Strategi testing dan Scrum/Jira |
+| `docs-blueprint/prd.md` | Product requirement, user story, prioritas |
+| `docs-blueprint/architecture.md` | Arsitektur, folder, deployment topology |
+| `docs-blueprint/database.md` | Skema, relasi, RLS |
+| `docs-blueprint/design.md` | Design system, token, wireframe 14 layar |
+| `docs-blueprint/designpattern.md` | Container-Presenter, Hooks, Repository, OOP service |
+| `docs-blueprint/roadmap.md` | Phase 0-7 dan pembagian sprint |
+| `docs-blueprint/git.md` | Branch naming dan commit convention |
+| `docs-blueprint/docker.md` / `vercel.md` / `supabase.md` | Panduan deployment |
+| `docs-blueprint/testing.md` / `jira.md` | Strategi testing dan Scrum/Jira |
 | `docs/backlog/` | Backlog awal + sprint plan |
 | `docs/sprint/` | Catatan per sprint |
 | `docs/presentation/` | Slide outline + demo script |
