@@ -301,9 +301,11 @@ Layout width: `max-w-7xl mx-auto` for public pages; dashboards use full width wi
 
 ### Radius (one documented system)
 
-- Inputs & buttons: 8px (`rounded-lg`)
-- Cards & panels: 12px (`rounded-xl`)
-- Modals: 16px (`rounded-2xl`)
+Base token `--radius: 12px`.
+
+- Inputs & buttons: 12px (`rounded-lg`)
+- Cards & panels: 16px (`rounded-xl`)
+- Modals & dialogs: 16px (`rounded-xl`)
 - Badges & avatars: full (`rounded-full`)
 
 ### Elevation
@@ -336,18 +338,18 @@ Core components:
 - Progress
 - Calendar
 
-Custom JobTrack components:
+Custom JobTrack components (implemented in Phase 2):
 
-- JobCard
-- JobStatusBadge
-- ApplicationStatus
-- ApplicationTimeline
-- HiringPipeline
-- KPIStatCard
-- ActivityList
-- ApplicantRow
-- InterviewCard
-- DashboardSection
+| Component | Location |
+|---|---|
+| `StatusBadge` (primitive) | `src/components/shared/` |
+| `KPIStatCard`, `DashboardSection`, `ActivityList` | `src/components/shared/` |
+| `JobCard`, `JobStatusBadge` | `src/features/jobs/components/` |
+| `ApplicationStatusBadge`, `ApplicationTimeline` | `src/features/applications/components/` |
+| `ApplicantRow`, `HiringPipeline` | `src/features/applicants/components/` |
+| `InterviewCard` | `src/features/employer/components/` |
+
+A live QA surface is available at `/styleguide` (internal, noindex).
 
 ### Icons
 
@@ -357,10 +359,10 @@ Custom JobTrack components:
 
 ### Charts
 
-- Use **Recharts** via the shadcn/ui Chart wrapper.
-- Hiring pipeline: funnel chart with a text/table fallback and visible stage labels (never color alone).
+- Trend/distribution charts (Sprint 3 dashboards) use **Recharts** via the shadcn/ui Chart wrapper.
+- `HiringPipeline` (Phase 2) uses the accessible stage-list representation: label + count + percentage always visible, progress bar as reinforcement only.
 - KPIs: number + delta with arrow/word; no filled background progress tracks as decoration.
-- Chart colors come from tokens; axes, legends, and tooltips must stay readable in both surface contexts.
+- Chart colors come from tokens; axes, legends, and tooltips must stay readable on both surfaces.
 
 ### Seed / Demo Data
 
@@ -493,7 +495,7 @@ Rules:
 
 ## 13. Reference Image Rule
 
-> Note: the reference image is not stored in the repository. When it is unavailable, use the characteristics listed in §1 (composition, density, hierarchy, card treatment) and the tokens in §5–§7 as the binding direction. The original image remains a visual reference only, never a copy target.
+> Note: the reference image (Peepulse-style dashboard, received 05-10-2026) is not stored in the repository because it is a third-party asset. The binding direction is the characteristics listed in §1 (composition, density, hierarchy, card treatment) plus the tokens in §5–§7. The original image remains a visual reference only, never a copy target.
 
 The uploaded image is a **visual reference**.
 
@@ -527,9 +529,15 @@ Phase 1 (done):
 - [x] Responsive rules (§9)
 - [x] Motion plan (§12)
 
-Phase 2–3 (next):
+Phase 2 (done):
 
-- [ ] Core components (`src/components/ui/` + shadcn/ui)
+- [x] Core components (`src/components/ui/` + 18 shadcn/ui components)
+- [x] Custom JobTrack components (`src/components/shared/` + `src/features/*/components/`)
+- [x] Design tokens + fonts applied (`globals.css`, `layout.tsx`)
+- [x] QA surface `/styleguide`
+
+Phase 3 (next):
+
 - [ ] Employer dashboard wireframe
 - [ ] Seeker dashboard wireframe
 - [ ] Job listing
@@ -607,6 +615,14 @@ Persisted design system: `design-system/jobtrack/MASTER.md`.
 | D-09 | Charts: Recharts via shadcn/ui Chart | Matches stack, accessible fallbacks documented |
 | D-10 | Fonts: Poppins + Open Sans via `next/font` | Verified pairing from UI UX Pro Max; no `<link>` in production |
 
+### Implementation Record — Phase 2
+
+- App scaffold: Next.js 16 + TypeScript + Tailwind v4 + shadcn/ui (style `radix-nova`, Lucide icons).
+- 18 base components in `src/components/ui/`; custom components per §8.
+- Tokens from §5–§7 applied in `src/app/globals.css`; fonts (Poppins + Open Sans) via `next/font` in `src/app/layout.tsx`.
+- Domain types: `src/domain/status.ts`, `job.ts`, `application.ts`.
+- Verification: `npm run lint`, `npm run typecheck`, `npm run build` pass; routes `/` and `/styleguide` prerendered.
+
 ### Next Step
 
-Phase 2 (component system) and Phase 3 (wireframes/screens) per `roadmap.md`.
+Phase 3 (wireframes/screens) per `roadmap.md`.
