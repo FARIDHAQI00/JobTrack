@@ -94,7 +94,7 @@ const applicants: Applicant[] = [
 
 export function StyleguideContent() {
   return (
-    <main className="mx-auto flex max-w-7xl flex-col gap-10 px-6 py-10">
+    <main className="public-canvas mx-auto flex min-h-[100dvh] max-w-7xl flex-col gap-10 px-6 py-10">
       <header className="grid gap-1">
         <h1 className="font-heading text-3xl font-semibold tracking-tight">
           JobTrack Component Styleguide
@@ -102,6 +102,10 @@ export function StyleguideContent() {
         <p className="text-muted-foreground">
           Halaman internal untuk QA visual Phase 2. Tidak termasuk navigasi
           produk dan tidak diindeks mesin pencari.
+        </p>
+        <p className="text-xs text-muted-foreground">
+          Angka dan nama di bawah adalah contoh untuk meninjau komponen, bukan
+          metrik produk.
         </p>
       </header>
 
@@ -277,7 +281,7 @@ export function StyleguideContent() {
               className="bg-cta text-cta-foreground hover:bg-cta/90"
               onClick={() => toast.success("Lamaran berhasil dikirim")}
             >
-              CTA Sukses
+              Aksi Utama
             </Button>
           </div>
           <div className="flex flex-wrap items-center gap-2">

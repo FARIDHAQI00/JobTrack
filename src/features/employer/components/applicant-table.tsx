@@ -184,7 +184,7 @@ export function ApplicantTable({ applicants }: ApplicantTableProps) {
 
       <ul className="divide-y md:hidden">
         {applicants.map((applicant) => (
-          <li key={applicant.id} className="grid gap-3 py-4">
+          <li key={applicant.id} className="grid gap-3 border-b border-border/60 py-4 last:border-0">
             <div className="flex items-center gap-3">
               <Avatar>
                 <AvatarFallback>{initials(applicant.name)}</AvatarFallback>
@@ -236,7 +236,7 @@ export function ApplicantTable({ applicants }: ApplicantTableProps) {
                       <FileText className="size-4" aria-hidden="true" />
                       Surat lamaran
                     </span>
-                    <p className="rounded-lg bg-muted/60 px-3 py-2 text-sm text-muted-foreground">
+                    <p className="rounded-xl border border-border/65 bg-muted/55 px-3.5 py-3 text-sm leading-6 text-muted-foreground">
                       {detail.coverLetter}
                     </p>
                   </div>

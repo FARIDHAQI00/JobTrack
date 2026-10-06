@@ -17,7 +17,7 @@ export interface ApplicantRowProps {
  */
 export function ApplicantRow({ applicant, onOpen }: ApplicantRowProps) {
   return (
-    <div className="flex items-center gap-3 py-3">
+    <div className="group/applicant flex items-center gap-3 py-3">
       <Avatar>
         {applicant.avatarUrl ? (
           <AvatarImage src={applicant.avatarUrl} alt="" />
@@ -25,7 +25,9 @@ export function ApplicantRow({ applicant, onOpen }: ApplicantRowProps) {
         <AvatarFallback>{initials(applicant.name)}</AvatarFallback>
       </Avatar>
       <div className="grid min-w-0 flex-1 gap-0.5">
-        <span className="truncate text-sm font-medium">{applicant.name}</span>
+        <span className="truncate text-sm font-medium transition-colors duration-200 group-hover/applicant:text-primary">
+          {applicant.name}
+        </span>
         {applicant.email ? (
           <span className="truncate text-xs text-muted-foreground">
             {applicant.email}

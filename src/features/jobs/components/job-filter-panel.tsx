@@ -40,10 +40,10 @@ function FilterGroup({
               aria-pressed={active}
               onClick={() => onSelect(active ? undefined : option.value)}
               className={cn(
-                "rounded-full border px-3 py-1 text-sm transition-colors",
+                "min-h-9 cursor-pointer rounded-xl border px-3 py-1.5 text-sm transition-[color,background-color,border-color,box-shadow] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/45",
                 active
-                  ? "border-primary bg-primary text-primary-foreground"
-                  : "border-border bg-card text-foreground hover:bg-muted"
+                  ? "border-primary bg-primary text-primary-foreground shadow-[var(--elevation-subtle)]"
+                  : "border-border/80 bg-card/80 text-foreground hover:border-primary/25 hover:bg-secondary/70"
               )}
             >
               {option.label}

@@ -95,23 +95,26 @@ export default async function EmployerDashboardPage() {
   const companyMissing = !company;
 
   return (
-    <div className="grid gap-6">
+    <div className="grid gap-7 lg:gap-9">
       <header className="flex flex-wrap items-end justify-between gap-3">
-        <div className="grid gap-1">
-          <h1 className="font-heading text-2xl font-semibold tracking-tight">
+        <div className="grid gap-2">
+          <h1 className="font-heading text-3xl font-semibold tracking-tight sm:text-4xl">
             Halo, {company?.name ?? "Employer"}!
           </h1>
-          <p className="text-muted-foreground">
+          <p className="max-w-[60ch] leading-6 text-muted-foreground">
             Ringkasan lowongan dan kandidat perusahaanmu.
           </p>
         </div>
         <Button size="lg" className="h-11" asChild>
-          <Link href="/employer/jobs/new">+ Buat Lowongan</Link>
+          <Link href="/employer/jobs/new">
+            <BriefcaseBusiness aria-hidden="true" />
+            Buat Lowongan
+          </Link>
         </Button>
       </header>
 
       {companyMissing ? (
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-warning-bg px-4 py-3 text-sm text-warning">
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-warning/15 bg-warning-bg/85 px-4 py-4 text-sm text-warning">
           <span>
             Profil perusahaan belum ada. Lengkapi dulu agar bisa membuat
             lowongan.
@@ -122,7 +125,7 @@ export default async function EmployerDashboardPage() {
         </div>
       ) : null}
 
-      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4 xl:gap-4">
         <KPIStatCard
           label="Lowongan Aktif"
           value={String(activeJobs)}
@@ -146,7 +149,7 @@ export default async function EmployerDashboardPage() {
         />
       </section>
 
-      <section className="grid gap-4 lg:grid-cols-2">
+      <section className="grid gap-5 lg:grid-cols-2">
         <DashboardSection
           title="Hiring Pipeline"
           description="Distribusi kandidat per tahap rekrutmen."
@@ -184,7 +187,7 @@ export default async function EmployerDashboardPage() {
             {interviewApplicants.map(({ job, applicant }) => (
               <li
                 key={applicant.id}
-                className="flex flex-wrap items-center gap-3 py-3 first:pt-0 last:pb-0"
+                className="flex flex-wrap items-center gap-3 border-b border-border/60 py-4 last:border-0 first:pt-0 last:pb-0"
               >
                 <div className="grid min-w-0 flex-1 gap-0.5">
                   <span className="truncate font-medium">

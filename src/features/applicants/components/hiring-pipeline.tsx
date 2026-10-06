@@ -16,7 +16,7 @@ export function HiringPipeline({ stages }: HiringPipelineProps) {
   const total = stages.reduce((sum, stage) => sum + stage.count, 0);
 
   return (
-    <div className="flex flex-col gap-4" role="group" aria-label="Hiring pipeline">
+    <div className="flex flex-col gap-5" role="group" aria-label="Hiring pipeline">
       {stages.map((stage) => {
         const percent =
           total === 0 ? 0 : Math.round((stage.count / total) * 100);
@@ -24,7 +24,7 @@ export function HiringPipeline({ stages }: HiringPipelineProps) {
 
         return (
           <div key={stage.status} className="grid gap-1.5">
-            <div className="flex items-baseline justify-between text-sm">
+            <div className="flex items-baseline justify-between gap-3 text-sm">
               <span className="font-medium">{label}</span>
               <span className="tabular-nums text-muted-foreground">
                 {stage.count} kandidat ({percent}%)

@@ -78,27 +78,27 @@ export default async function JobsPage({ searchParams }: JobsPageProps) {
   }
 
   return (
-    <main className="mx-auto max-w-7xl px-6 py-10">
-      <div className="mb-8 grid gap-4">
-        <div className="grid gap-1">
-          <h1 className="font-heading text-3xl font-semibold tracking-tight">
-            Lowongan
+    <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+      <div className="mb-8 grid gap-6 rounded-3xl border border-border/70 bg-card/75 p-5 shadow-[var(--elevation-card)] sm:p-7 lg:grid-cols-[1fr_minmax(18rem,0.72fr)] lg:items-end lg:gap-10 lg:p-9">
+        <div className="grid gap-2">
+          <h1 className="font-heading text-3xl font-semibold tracking-tight sm:text-4xl">
+            Cari lowongan
           </h1>
-          <p className="text-muted-foreground">
+          <p className="max-w-[58ch] text-sm leading-6 text-muted-foreground sm:text-base">
             {filteredJobs.length} lowongan ditemukan
-            {query ? ` untuk "${query}"` : ""}
+            {query ? ` untuk “${query}”` : ""}. Gunakan filter untuk mempersempit pilihan.
           </p>
         </div>
-        <div className="max-w-xl">
+        <div className="w-full">
           <JobSearchInput defaultValue={query} />
         </div>
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
+      <div className="grid gap-6 lg:grid-cols-[260px_1fr] lg:gap-8">
         <aside className="hidden lg:block">
-          <Card className="sticky top-24">
+          <Card className="sticky top-24 bg-card/90">
             <CardHeader>
-              <CardTitle>Filter</CardTitle>
+              <CardTitle className="text-lg">Filter lowongan</CardTitle>
             </CardHeader>
             <CardContent>
               <JobFilterPanel categories={categories} locations={locations} />
@@ -131,7 +131,7 @@ export default async function JobsPage({ searchParams }: JobsPageProps) {
           </div>
 
           {pageJobs.length > 0 ? (
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-4 xl:grid-cols-2">
               {pageJobs.map((job) => (
                 <JobCard
                   key={job.id}
@@ -141,8 +141,8 @@ export default async function JobsPage({ searchParams }: JobsPageProps) {
               ))}
             </div>
           ) : (
-            <div className="flex flex-col items-center gap-3 rounded-xl bg-card px-6 py-16 text-center ring-1 ring-foreground/10">
-              <span className="flex size-12 items-center justify-center rounded-2xl bg-muted text-muted-foreground">
+            <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-border bg-card/80 px-6 py-16 text-center shadow-[var(--elevation-card)]">
+              <span className="flex size-12 items-center justify-center rounded-2xl bg-secondary text-primary">
                 <SearchX className="size-5" aria-hidden="true" />
               </span>
               <p className="font-medium">Tidak ada lowongan yang cocok</p>

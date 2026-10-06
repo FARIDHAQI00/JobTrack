@@ -64,7 +64,7 @@ export function JobSearchInput({ defaultValue = "" }: JobSearchInputProps) {
       className="relative"
     >
       <Search
-        className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+        className="absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-primary"
         aria-hidden="true"
       />
       <Input
@@ -72,7 +72,7 @@ export function JobSearchInput({ defaultValue = "" }: JobSearchInputProps) {
         onChange={(event) => handleChange(event.target.value)}
         aria-label="Cari lowongan"
         placeholder="Cari posisi, perusahaan, atau kota"
-        className="h-11 bg-card pl-9"
+        className="h-11 bg-card/85 pl-10"
       />
     </form>
   );

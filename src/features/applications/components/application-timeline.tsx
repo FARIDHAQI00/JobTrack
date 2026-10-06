@@ -32,12 +32,12 @@ export function ApplicationTimeline({ status }: ApplicationTimelineProps) {
             <span
               aria-hidden="true"
               className={cn(
-                "flex size-5 shrink-0 items-center justify-center rounded-full border text-[10px] font-semibold",
+                "flex size-6 shrink-0 items-center justify-center rounded-full border text-[10px] font-semibold transition-[background-color,border-color,color,box-shadow] duration-200",
                 done &&
                   "border-transparent bg-status-accepted-bg text-status-accepted",
                 current &&
-                  "border-primary bg-primary text-primary-foreground",
-                !done && !current && "border-border bg-muted text-muted-foreground"
+                  "border-primary bg-primary text-primary-foreground ring-4 ring-primary/10",
+                !done && !current && "border-border/80 bg-card text-muted-foreground"
               )}
             >
               {done ? <Check className="size-3" /> : index + 1}
@@ -58,7 +58,7 @@ export function ApplicationTimeline({ status }: ApplicationTimelineProps) {
         <li className="flex items-center gap-3">
           <span
             aria-hidden="true"
-            className="flex size-5 shrink-0 items-center justify-center rounded-full bg-status-rejected-bg text-status-rejected"
+            className="flex size-6 shrink-0 items-center justify-center rounded-full bg-status-rejected-bg text-status-rejected"
           >
             <X className="size-3" />
           </span>

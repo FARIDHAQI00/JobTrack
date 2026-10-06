@@ -72,7 +72,7 @@ export function RegisterForm() {
           {USER_ROLES.map((role, index) => (
             <label
               key={role}
-              className="flex cursor-pointer items-center gap-3 rounded-xl border border-border bg-card px-3 py-3 text-sm transition-colors has-[:checked]:border-primary has-[:checked]:bg-secondary has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring/50"
+              className="flex min-h-14 cursor-pointer items-center gap-3 rounded-xl border border-border/80 bg-card/80 px-3.5 py-3 text-sm transition-[background-color,border-color,box-shadow] duration-200 hover:border-primary/25 has-[:checked]:border-primary/50 has-[:checked]:bg-secondary/75 has-[:checked]:shadow-[var(--elevation-subtle)] has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring/45"
             >
               <input
                 type="radio"
@@ -89,26 +89,26 @@ export function RegisterForm() {
       {state.error ? (
         <p
           role="alert"
-          className="flex items-start gap-2 rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive"
+          className="flex items-start gap-2 rounded-xl border border-destructive/15 bg-destructive/10 px-3.5 py-3 text-sm text-destructive"
         >
           <AlertCircle className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
           {state.error}
         </p>
       ) : null}
       {state.info ? (
-        <p className="flex items-start gap-2 rounded-lg bg-info-bg px-3 py-2 text-sm text-info">
+        <p className="flex items-start gap-2 rounded-xl border border-info/15 bg-info-bg px-3.5 py-3 text-sm text-info">
           <Info className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
           {state.info}
         </p>
       ) : null}
-      <Button type="submit" size="lg" className="h-11" disabled={pending}>
+      <Button type="submit" size="lg" className="h-11 w-full" disabled={pending}>
         {pending ? "Memproses..." : "Daftar"}
       </Button>
       <p className="text-center text-sm text-muted-foreground">
         Sudah punya akun?{" "}
         <Link
           href="/login"
-          className="font-medium text-primary hover:underline"
+          className="font-semibold text-primary transition-colors hover:text-foreground hover:underline"
         >
           Masuk
         </Link>

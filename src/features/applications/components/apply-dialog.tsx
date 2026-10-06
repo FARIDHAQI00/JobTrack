@@ -1,8 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -15,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { applyToJobAction } from "../actions";
+import { useApplyToJob } from "@/hooks/use-apply-to-job";
 
 export interface ApplyDialogProps {
   jobId: string;
@@ -31,20 +29,12 @@ export interface ApplyDialogProps {
 export function ApplyDialog({ jobId, jobTitle }: ApplyDialogProps) {
   const [open, setOpen] = useState(false);
   const [coverLetter, setCoverLetter] = useState("");
-  const [pending, startTransition] = useTransition();
-  const router = useRouter();
+  const { isPending, apply } = useApplyToJob(jobId);
 
   function submit() {
-    startTransition(async () => {
-      const result = await applyToJobAction(jobId, coverLetter);
-      if (result.error) {
-        toast.error(result.error);
-        return;
-      }
-      toast.success("Lamaran berhasil dikirim.");
+    apply(coverLetter, () => {
       setOpen(false);
       setCoverLetter("");
-      router.refresh();
     });
   }
 
@@ -53,7 +43,7 @@ export function ApplyDialog({ jobId, jobTitle }: ApplyDialogProps) {
       <DialogTrigger asChild>
         <Button
           size="lg"
-          className="h-11 bg-cta text-cta-foreground hover:bg-cta/90"
+          className="h-11 w-full"
         >
           Lamar Sekarang
         </Button>
@@ -79,16 +69,16 @@ export function ApplyDialog({ jobId, jobTitle }: ApplyDialogProps) {
           <Button
             variant="outline"
             onClick={() => setOpen(false)}
-            disabled={pending}
+            disabled={isPending}
           >
             Batal
           </Button>
           <Button
             onClick={submit}
-            disabled={pending}
-            className="bg-cta text-cta-foreground hover:bg-cta/90"
+            disabled={isPending}
+            className="min-h-11"
           >
-            {pending ? "Mengirim..." : "Kirim Lamaran"}
+            {isPending ? "Mengirim..." : "Kirim Lamaran"}
           </Button>
         </DialogFooter>
       </DialogContent>

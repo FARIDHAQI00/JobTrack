@@ -18,10 +18,10 @@ export default async function SeekerSavedPage() {
   const savedJobs = await getSavedJobRepository().listBySeeker(user.id);
 
   return (
-    <div className="grid gap-6">
+    <div className="grid gap-7">
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div className="grid gap-1">
-          <h1 className="font-heading text-2xl font-semibold tracking-tight">
+          <h1 className="font-heading text-3xl font-semibold tracking-tight sm:text-4xl">
             Lowongan Tersimpan
           </h1>
           <p className="text-muted-foreground">
@@ -36,8 +36,8 @@ export default async function SeekerSavedPage() {
       {savedJobs.length > 0 ? (
         <SavedJobsList jobs={savedJobs} />
       ) : (
-        <div className="flex flex-col items-center gap-3 rounded-xl bg-card px-6 py-16 text-center ring-1 ring-foreground/10">
-          <span className="flex size-12 items-center justify-center rounded-2xl bg-muted text-muted-foreground">
+        <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-border bg-card/80 px-6 py-16 text-center shadow-[var(--elevation-card)]">
+          <span className="flex size-12 items-center justify-center rounded-2xl bg-secondary text-primary">
             <Bookmark className="size-5" aria-hidden="true" />
           </span>
           <p className="font-medium">Belum ada lowongan tersimpan</p>

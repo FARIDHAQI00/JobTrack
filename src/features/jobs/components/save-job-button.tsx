@@ -1,11 +1,8 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
 import { Bookmark } from "lucide-react";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { toggleSavedJobAction } from "@/features/jobs/actions";
+import { useSavedJobToggle } from "@/hooks/use-saved-job";
 
 export interface SaveJobButtonProps {
   jobId: string;
@@ -16,35 +13,20 @@ export interface SaveJobButtonProps {
  * Tombol simpan/hapus lowongan dengan feedback toast.
  */
 export function SaveJobButton({ jobId, initialSaved }: SaveJobButtonProps) {
-  const [saved, setSaved] = useState(initialSaved);
-  const [pending, startTransition] = useTransition();
-  const router = useRouter();
-
-  function toggle() {
-    startTransition(async () => {
-      const result = await toggleSavedJobAction(jobId);
-      if (result.error) {
-        toast.error(result.error);
-        return;
-      }
-      setSaved(Boolean(result.saved));
-      toast.success(
-        result.saved ? "Lowongan disimpan." : "Lowongan dihapus dari simpanan."
-      );
-      router.refresh();
-    });
-  }
+  const { saved, isPending, toggle } = useSavedJobToggle(jobId, initialSaved);
 
   return (
     <Button
       variant="outline"
       size="lg"
-      className="h-11"
+      className="h-11 w-full border-border/80 bg-card/80"
       onClick={toggle}
-      disabled={pending}
+      disabled={isPending}
       aria-pressed={saved}
     >
-      <Bookmark className={saved ? "fill-current" : undefined} />
+      <Bookmark
+        className={saved ? "fill-current text-primary" : "transition-transform duration-200 group-hover/button:-rotate-6"}
+      />
       {saved ? "Tersimpan" : "Simpan lowongan"}
     </Button>
   );

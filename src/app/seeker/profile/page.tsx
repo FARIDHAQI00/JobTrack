@@ -19,12 +19,12 @@ export default async function SeekerProfilePage() {
   const completeness = seekerProfileCompleteness(profile);
 
   return (
-    <div className="grid gap-6">
-      <header className="grid gap-1">
-        <h1 className="font-heading text-2xl font-semibold tracking-tight">
+    <div className="grid gap-7">
+      <header className="grid gap-2">
+        <h1 className="font-heading text-3xl font-semibold tracking-tight sm:text-4xl">
           Profil Saya
         </h1>
-        <p className="text-muted-foreground">
+        <p className="max-w-[60ch] leading-6 text-muted-foreground">
           Profil yang lengkap membantu employer mengenalimu lebih cepat.
         </p>
       </header>
@@ -36,7 +36,7 @@ export default async function SeekerProfilePage() {
           </CardHeader>
           <CardContent>
             <div className="mb-5 grid gap-1 rounded-xl bg-muted/60 px-4 py-3">
-              <span className="text-sm text-muted-foreground">
+              <span className="text-xs font-medium text-muted-foreground">
                 Email akun
               </span>
               <span className="font-medium">{user.email}</span>

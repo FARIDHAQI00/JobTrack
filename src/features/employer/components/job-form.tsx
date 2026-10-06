@@ -47,7 +47,7 @@ export function JobForm({ mode, jobId, defaultValues }: JobFormProps) {
   );
 
   return (
-    <form action={formAction} className="grid max-w-2xl gap-5">
+    <form action={formAction} className="grid max-w-3xl gap-6">
       {jobId ? <input type="hidden" name="jobId" value={jobId} /> : null}
 
       <div className="grid gap-2">
@@ -162,14 +162,14 @@ export function JobForm({ mode, jobId, defaultValues }: JobFormProps) {
       {state.error ? (
         <p
           role="alert"
-          className="flex items-start gap-2 rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive"
+          className="flex items-start gap-2 rounded-xl border border-destructive/15 bg-destructive/10 px-3.5 py-3 text-sm text-destructive"
         >
           <AlertCircle className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
           {state.error}
         </p>
       ) : null}
 
-      <div className="flex flex-wrap items-center gap-3">
+      <div className="flex flex-wrap items-center gap-3 border-t border-border/65 pt-5">
         <Button type="submit" size="lg" className="h-11" disabled={pending}>
           {pending
             ? "Menyimpan..."

@@ -79,10 +79,12 @@ export function EmployerJobsList({
         {jobs.map((job) => (
           <li
             key={job.id}
-            className="flex flex-wrap items-center gap-3 py-4"
+           className="group/job flex flex-wrap items-center gap-3 rounded-xl px-3 py-4 transition-colors duration-200 hover:bg-muted/40"
           >
             <div className="grid min-w-0 flex-1 gap-0.5">
-              <span className="truncate font-medium">{job.title}</span>
+              <span className="truncate font-medium transition-colors duration-200 group-hover/job:text-primary">
+                {job.title}
+              </span>
               <span className="text-sm text-muted-foreground">
                 {job.location} · {job.employmentType.replace("_", " ")} ·{" "}
                 {job.postedAt ? `Diposting ${formatDateID(job.postedAt)}` : ""}

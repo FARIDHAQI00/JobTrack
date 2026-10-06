@@ -54,17 +54,17 @@ export default async function SeekerDashboardPage() {
     .split(" ")[0];
 
   return (
-    <div className="grid gap-6">
-      <header className="grid gap-1">
-        <h1 className="font-heading text-2xl font-semibold tracking-tight">
+    <div className="grid gap-7 lg:gap-9">
+      <header className="grid gap-2">
+        <h1 className="font-heading text-3xl font-semibold tracking-tight sm:text-4xl">
           Halo, {greetingName}!
         </h1>
-        <p className="text-muted-foreground">
+        <p className="max-w-[60ch] leading-6 text-muted-foreground">
           Ringkasan lamaran dan rekomendasi lowongan untukmu.
         </p>
       </header>
 
-      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4 xl:gap-4">
         <KPIStatCard
           label="Total Lamaran"
           value={String(applications.length)}
@@ -92,7 +92,7 @@ export default async function SeekerDashboardPage() {
         />
       </section>
 
-      <section className="grid gap-4 lg:grid-cols-2">
+      <section className="grid gap-5 lg:grid-cols-2">
         <DashboardSection
           title="Progres Lamaran"
           description="Status lamaran terakhirmu."
@@ -145,9 +145,9 @@ export default async function SeekerDashboardPage() {
         </DashboardSection>
       </section>
 
-      <section className="grid gap-4">
+      <section className="grid gap-5">
         <div className="flex items-center justify-between gap-4">
-          <h2 className="font-heading text-xl font-semibold">
+          <h2 className="font-heading text-xl font-semibold tracking-tight sm:text-2xl">
             Rekomendasi Lowongan
           </h2>
           <Button variant="ghost" asChild>

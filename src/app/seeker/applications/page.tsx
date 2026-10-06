@@ -39,9 +39,9 @@ export default async function SeekerApplicationsPage({
     : applications;
 
   return (
-    <div className="grid gap-6">
+    <div className="grid gap-7">
       <header className="grid gap-1">
-        <h1 className="font-heading text-2xl font-semibold tracking-tight">
+        <h1 className="font-heading text-3xl font-semibold tracking-tight sm:text-4xl">
           Lamaran Saya
         </h1>
         <p className="text-muted-foreground">
@@ -55,10 +55,10 @@ export default async function SeekerApplicationsPage({
           href="/seeker/applications"
           aria-current={!statusFilter ? "page" : undefined}
           className={cn(
-            "rounded-full border px-3 py-1 text-sm transition-colors",
+            "rounded-xl border px-3.5 py-2 text-sm font-medium transition-[color,background-color,border-color] duration-200",
             !statusFilter
               ? "border-primary bg-primary text-primary-foreground"
-              : "border-border bg-card hover:bg-muted"
+              : "border-border/80 bg-card/75 text-muted-foreground hover:bg-secondary hover:text-secondary-foreground"
           )}
         >
           Semua
@@ -69,10 +69,10 @@ export default async function SeekerApplicationsPage({
             href={`/seeker/applications?status=${status}`}
             aria-current={statusFilter === status ? "page" : undefined}
             className={cn(
-              "rounded-full border px-3 py-1 text-sm transition-colors",
+              "rounded-xl border px-3.5 py-2 text-sm font-medium transition-[color,background-color,border-color] duration-200",
               statusFilter === status
                 ? "border-primary bg-primary text-primary-foreground"
-                : "border-border bg-card hover:bg-muted"
+                : "border-border/80 bg-card/75 text-muted-foreground hover:bg-secondary hover:text-secondary-foreground"
             )}
           >
             {APPLICATION_STATUS_LABELS[status]}

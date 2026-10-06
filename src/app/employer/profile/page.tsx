@@ -16,24 +16,24 @@ export default async function EmployerProfilePage() {
   const company = await getCompanyRepository().getByUserId(user.id);
 
   return (
-    <div className="grid gap-6">
-      <header className="grid gap-1">
-        <h1 className="font-heading text-2xl font-semibold tracking-tight">
+    <div className="grid gap-7">
+      <header className="grid gap-2">
+        <h1 className="font-heading text-3xl font-semibold tracking-tight sm:text-4xl">
           Profil Perusahaan
         </h1>
-        <p className="text-muted-foreground">
+        <p className="max-w-[60ch] leading-6 text-muted-foreground">
           Profil ini tampil pada halaman detail setiap lowonganmu.
         </p>
       </header>
 
       <div className="grid gap-6 lg:grid-cols-[1fr_300px]">
-        <Card>
+        <Card className="bg-card/90">
           <CardHeader>
             <CardTitle>Data Perusahaan</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="mb-5 grid gap-1 rounded-xl bg-muted/60 px-4 py-3">
-              <span className="text-sm text-muted-foreground">
+              <span className="text-xs font-medium text-muted-foreground">
                 Email akun
               </span>
               <span className="font-medium">{user.email}</span>

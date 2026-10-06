@@ -7,7 +7,7 @@
 ---
 
 **Project:** JobTrack
-**Generated:** 2026-10-05 15:45:54
+**Updated:** 2026-10-06
 **Category:** Job Board/Recruitment
 **Design Dials:** Variance 5/10 (Balanced / Modern) | Motion 3/10 (Subtle) | Density 7/10 (Standard)
 
@@ -19,24 +19,25 @@
 
 | Role | Hex | CSS Variable |
 |------|-----|--------------|
-| Primary | `#0369A1` | `--color-primary` |
-| On Primary | `#FFFFFF` | `--color-on-primary` |
-| Secondary | `#0EA5E9` | `--color-secondary` |
-| On Secondary | `#0F172A` | `--color-on-secondary` |
-| Accent/CTA | `#16A34A` | `--color-accent` |
-| On Accent/CTA | `#000000` | `--color-on-accent` |
-| Background | `#F0F9FF` | `--color-background` |
-| Foreground | `#0C4A6E` | `--color-foreground` |
+| Primary | `#7040D8` | `--color-primary` |
+| On Primary | `#FFFFFF` | `--color-primary-foreground` |
+| Secondary | `#F1ECF8` | `--color-secondary` |
+| On Secondary | `#482B73` | `--color-secondary-foreground` |
+| Accent/CTA | `#7040D8` | `--color-cta` |
+| On Accent/CTA | `#FFFFFF` | `--color-cta-foreground` |
+| Background | `#FAF8FD` | `--color-background` |
+| Foreground | `#241D30` | `--color-foreground` |
 | Card | `#FFFFFF` | `--color-card` |
-| Card Foreground | `#0C4A6E` | `--color-card-foreground` |
-| Muted | `#E7EFF5` | `--color-muted` |
-| Muted Foreground | `#475569` | `--color-muted-foreground` |
-| Border | `#BAE6FD` | `--color-border` |
+| Card Foreground | `#241D30` | `--color-card-foreground` |
+| Muted | `#F1ECF8` | `--color-muted` |
+| Muted Foreground | `#706A79` | `--color-muted-foreground` |
+| Border | `#E7E0EF` | `--color-border` |
 | Destructive | `#DC2626` | `--color-destructive` |
-| On Destructive | `#FFFFFF` | `--color-on-destructive` |
-| Ring | `#0369A1` | `--color-ring` |
+| On Destructive | `#FFFFFF` | `--color-destructive-foreground` |
+| Ring | `#7040D8` | `--color-ring` |
+| Warm Tint | `#F5E8E2` | `--color-warm-tint` |
 
-**Color Notes:** Professional blue + success green [Accent adjusted from #22C55E]
+**Color Notes:** Restrained violet identity on a warm off-white/lilac canvas. Green, amber, and red are reserved for semantic status feedback.
 
 ### Typography
 
@@ -68,10 +69,12 @@
 
 | Level | Value | Usage |
 |-------|-------|-------|
-| `--shadow-sm` | `0 1px 2px rgba(0,0,0,0.05)` | Subtle lift |
-| `--shadow-md` | `0 4px 6px rgba(0,0,0,0.1)` | Cards, buttons |
-| `--shadow-lg` | `0 10px 15px rgba(0,0,0,0.1)` | Modals, dropdowns |
-| `--shadow-xl` | `0 20px 25px rgba(0,0,0,0.15)` | Hero images, featured cards |
+| `--elevation-subtle` | `0 1px 2px rgba(43,29,61,0.055)` | Quiet active/focus surface |
+| `--elevation-button` | `0 2px 8px rgba(72,42,116,0.15)` | Primary-action lift |
+| `--elevation-button-hover` | `0 5px 14px rgba(72,42,116,0.20)` | Button hover feedback |
+| `--elevation-card` | `0 4px 12px rgba(35,24,50,0.13)` | Cards and panels |
+| `--elevation-card-hover` | `0 6px 14px rgba(35,24,50,0.18)` | Interactive card hover |
+| `--elevation-popover` | `0 18px 48px rgba(35,24,50,0.16)` | Dialogs and popovers |
 
 ---
 
@@ -82,12 +85,12 @@
 ```css
 /* Primary Button */
 .btn-primary {
-  background: #16A34A;
-  color: white;
+  background: var(--cta);
+  color: var(--cta-foreground);
   padding: 12px 24px;
-  border-radius: 8px;
+  border-radius: 12px;
   font-weight: 600;
-  transition: all 200ms ease;
+  transition: background-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
   cursor: pointer;
 }
 
@@ -99,12 +102,12 @@
 /* Secondary Button */
 .btn-secondary {
   background: transparent;
-  color: #0369A1;
-  border: 2px solid #0369A1;
+  color: var(--primary);
+  border: 1px solid var(--border);
   padding: 12px 24px;
-  border-radius: 8px;
+  border-radius: 12px;
   font-weight: 600;
-  transition: all 200ms ease;
+  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
   cursor: pointer;
 }
 ```
@@ -113,16 +116,20 @@
 
 ```css
 .card {
-  background: #F0F9FF;
-  border-radius: 12px;
+  background: var(--card);
+  color: var(--card-foreground);
+  border: 1px solid var(--border);
+  border-radius: 16px;
   padding: 24px;
-  box-shadow: var(--shadow-md);
-  transition: all 200ms ease;
-  cursor: pointer;
+  box-shadow: var(--elevation-card);
 }
 
-.card:hover {
-  box-shadow: var(--shadow-lg);
+.card-interactive {
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.card-interactive:hover {
+  box-shadow: var(--elevation-card-hover);
   transform: translateY(-2px);
 }
 ```
@@ -132,16 +139,16 @@
 ```css
 .input {
   padding: 12px 16px;
-  border: 1px solid #E2E8F0;
-  border-radius: 8px;
+  border: 1px solid var(--input);
+  border-radius: 12px;
   font-size: 16px;
   transition: border-color 200ms ease;
 }
 
 .input:focus {
-  border-color: #0369A1;
+  border-color: var(--ring);
   outline: none;
-  box-shadow: 0 0 0 3px #0369A120;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 18%, transparent);
 }
 ```
 
@@ -157,7 +164,7 @@
   background: white;
   border-radius: 16px;
   padding: 32px;
-  box-shadow: var(--shadow-xl);
+  box-shadow: var(--elevation-popover);
   max-width: 500px;
   width: 90%;
 }
@@ -167,13 +174,13 @@
 
 ## Style Guidelines
 
-**Style:** Flat Design
+**Style:** Editorial lavender SaaS; rounded capsule navigation, centered mesh hero, calm product surfaces with selective background depth
 
-**Keywords:** 2D, minimalist, bold colors, no shadows, clean lines, simple shapes, typography-focused, modern, icon-heavy
+**Keywords:** warm off-white canvas, restrained violet, deliberate surface elevation, faint geometric texture, confident type hierarchy, spacious public pages, readable operational dashboards
 
 **Best For:** Web apps, mobile apps, cross-platform, startup MVPs, user-friendly, SaaS, dashboards, corporate
 
-**Key Effects:** No gradients/shadows, simple hover (color/opacity shift), fast loading, clean transitions (150-200ms ease), minimal icons
+**Key Effects:** Selective low-contrast ambient washes on public sections, subtle plum-tinted shadows, clear interactive hover/focus states, clean 160–240ms transitions, reduced-motion support
 
 ### Page Pattern
 
@@ -187,17 +194,12 @@
 
 ## Motion
 
-**Scroll Reveal** (Subtle) — Trigger: scroll (viewport enter) | Duration: 300-400ms | Easing: `power1.out`
+Use CSS and the existing `tw-animate-css` utilities; do not add an animation dependency.
 
-```js
-gsap.from(el, { opacity: 0, y: 12, duration: 0.35, ease: 'power1.out', scrollTrigger: { trigger: el, start: 'top 90%', toggleActions: 'play none none reverse' } });
-```
-
-**Framework notes:** Requires the ScrollTrigger plugin registered once via gsap.registerPlugin(ScrollTrigger); Use matchMedia('(prefers-reduced-motion: reduce)') to skip non-essential motion and render the final state immediately
-
-- ✅ Keep the y offset small (8-16px) so it reads as a fade, not a slide
-- ❌ Don't reveal below-the-fold content needed for SEO/crawlers as invisible-by-default without a no-JS fallback
-- ⚡ toggleActions 'play none none reverse' avoids re-triggering on every scroll direction change
+- Feedback transitions: 160–240ms, easing that settles quickly.
+- Animate only opacity and transform; avoid layout changes and perpetual motion.
+- Limit entrance reveals to selected decorative/public elements; content remains visible without animation.
+- Respect `prefers-reduced-motion: reduce` globally.
 
 ---
 

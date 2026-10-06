@@ -85,13 +85,13 @@ export function ProfileForm({ defaultProfile }: ProfileFormProps) {
       {state.error ? (
         <p
           role="alert"
-          className="flex items-start gap-2 rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive"
+          className="flex items-start gap-2 rounded-xl border border-destructive/15 bg-destructive/10 px-3.5 py-3 text-sm text-destructive"
         >
           <AlertCircle className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
           {state.error}
         </p>
       ) : null}
-      <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center gap-3">
         <Button type="submit" size="lg" className="h-11" disabled={pending}>
           {pending ? "Menyimpan..." : "Simpan Perubahan"}
         </Button>

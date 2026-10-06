@@ -31,10 +31,10 @@ export function ApplicationList({ applications }: ApplicationListProps) {
         {applications.map((application) => (
           <li
             key={application.id}
-            className="flex flex-wrap items-center gap-3 py-4"
+            className="group/application flex flex-wrap items-center gap-3 py-4 first:pt-0 last:pb-0"
           >
             <div className="grid min-w-0 flex-1 gap-0.5">
-              <span className="truncate font-medium">
+              <span className="truncate font-medium transition-colors duration-200 group-hover/application:text-primary">
                 {application.jobTitle}
               </span>
               <span className="truncate text-sm text-muted-foreground">

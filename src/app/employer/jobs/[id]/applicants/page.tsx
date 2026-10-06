@@ -39,17 +39,17 @@ export default async function EmployerApplicantsPage({
   const applicants = result.applicants;
 
   return (
-    <div className="grid gap-6">
+    <div className="grid gap-7">
       <div className="grid gap-4">
         <Link
           href="/employer/jobs"
-          className="inline-flex w-fit items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+          className="inline-flex w-fit items-center gap-2 rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition-colors duration-200 hover:bg-card/75 hover:text-primary"
         >
           <ArrowLeft className="size-4" aria-hidden="true" />
           Kembali ke lowongan saya
         </Link>
         <div className="flex flex-wrap items-center gap-3">
-          <h1 className="font-heading text-2xl font-semibold tracking-tight">
+          <h1 className="font-heading text-3xl font-semibold tracking-tight sm:text-4xl">
             {job.title}
           </h1>
           <JobStatusBadge status={job.status} />
@@ -65,7 +65,7 @@ export default async function EmployerApplicantsPage({
             <ApplicantTable applicants={applicants} />
           ) : (
             <div className="flex flex-col items-center gap-3 py-14 text-center">
-              <span className="flex size-12 items-center justify-center rounded-2xl bg-muted text-muted-foreground">
+              <span className="flex size-12 items-center justify-center rounded-2xl bg-secondary text-primary">
                 <Users className="size-5" aria-hidden="true" />
               </span>
               <p className="font-medium">Belum ada pelamar</p>

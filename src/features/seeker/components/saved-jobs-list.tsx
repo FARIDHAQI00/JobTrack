@@ -32,7 +32,7 @@ export function SavedJobsList({ jobs }: SavedJobsListProps) {
 
   return (
     <div
-      className="grid gap-4 md:grid-cols-2 xl:grid-cols-3"
+      className="grid gap-4 transition-opacity duration-200 md:grid-cols-2 xl:grid-cols-3"
       aria-busy={pending}
     >
       {jobs.map((job) => (

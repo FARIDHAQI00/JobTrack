@@ -73,35 +73,41 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
   const loginHref = `/login?next=${encodeURIComponent(`/jobs/${job.id}`)}`;
 
   return (
-    <main className="mx-auto max-w-7xl px-6 py-10">
+    <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
       <Link
         href="/jobs"
-        className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+        className="mb-6 inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition-colors duration-200 hover:bg-card/75 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/45"
       >
         <ArrowLeft className="size-4" aria-hidden="true" />
         Kembali ke lowongan
       </Link>
 
-      <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
+      <div className="grid gap-7 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-10">
         <article className="grid content-start gap-8">
-          <header className="grid gap-3">
+          <header className="relative isolate grid gap-4 overflow-hidden rounded-3xl border border-border/70 bg-card/80 p-5 shadow-[var(--elevation-card)] sm:gap-5 sm:p-8">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -right-20 -top-24 -z-10 size-64 rounded-full border border-primary/10 bg-[radial-gradient(circle_at_35%_35%,color-mix(in_srgb,var(--warm-tint)_55%,white),transparent_70%)]"
+            />
             <div className="flex flex-wrap items-center gap-2">
               {job.category ? (
                 <Badge variant="secondary">{job.category}</Badge>
               ) : null}
               {closed ? <JobStatusBadge status={job.status} /> : null}
             </div>
-            <h1 className="font-heading text-3xl font-semibold tracking-tight">
+            <h1 className="max-w-[18ch] font-heading text-3xl font-semibold leading-tight tracking-tight text-balance sm:text-4xl">
               {job.title}
             </h1>
-            <p className="text-muted-foreground">
-              {job.companyName} · {job.location}
+            <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground sm:text-base">
+              <span className="font-semibold text-foreground">{job.companyName}</span>
+              <span aria-hidden="true" className="text-border">/</span>
+              <span>{job.location}</span>
             </p>
           </header>
 
           <section className="grid gap-3">
             <h2 className="font-heading text-xl font-semibold">Deskripsi</h2>
-            <p className="whitespace-pre-line leading-relaxed text-muted-foreground">
+            <p className="max-w-[68ch] whitespace-pre-line leading-7 text-muted-foreground">
               {job.description}
             </p>
           </section>
@@ -111,7 +117,7 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
               <h2 className="font-heading text-xl font-semibold">
                 Kualifikasi
               </h2>
-              <p className="whitespace-pre-line leading-relaxed text-muted-foreground">
+              <p className="max-w-[68ch] whitespace-pre-line leading-7 text-muted-foreground">
                 {job.qualifications}
               </p>
             </section>
@@ -122,11 +128,11 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
               Tentang {job.companyName}
             </h2>
             {company?.description ? (
-              <p className="leading-relaxed text-muted-foreground">
+              <p className="max-w-[68ch] leading-7 text-muted-foreground">
                 {company.description}
               </p>
             ) : (
-              <p className="leading-relaxed text-muted-foreground">
+              <p className="max-w-[68ch] leading-7 text-muted-foreground">
                 Lowongan ini diterbitkan oleh {job.companyName} di{" "}
                 {job.location}.
               </p>
@@ -146,19 +152,22 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
 
         <aside>
           <Card className="lg:sticky lg:top-24">
-            <CardContent className="grid gap-5">
+            <CardContent className="grid gap-5 pt-1">
+              <div className="flex items-center justify-between gap-3">
+                <span className="font-heading text-sm font-semibold">Ringkasan lowongan</span>
+              </div>
               {salary ? (
                 <div className="grid gap-1">
                   <span className="text-sm text-muted-foreground">
                     Estimasi gaji
                   </span>
-                  <span className="font-heading text-2xl font-semibold tabular-nums">
+                  <span className="font-heading text-3xl font-semibold tracking-tight tabular-nums">
                     {salary}
                   </span>
                 </div>
               ) : null}
 
-              <dl className="grid gap-3 text-sm">
+              <dl className="grid gap-3 border-y border-border/70 py-4 text-sm">
                 <div className="flex items-center gap-2">
                   <Briefcase
                     className="size-4 text-muted-foreground"

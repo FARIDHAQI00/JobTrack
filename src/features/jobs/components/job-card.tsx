@@ -10,7 +10,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { JobStatusBadge } from "./job-status-badge";
+import { cn } from "@/lib/utils";
 import type { Job } from "@/domain/job";
 import { EMPLOYMENT_TYPE_LABELS } from "@/domain/job";
 import { formatSalaryRange } from "@/lib/format";
@@ -21,6 +23,7 @@ export interface JobCardProps {
   onApply?: (id: string) => void;
   onSave?: (id: string) => void;
   saved?: boolean;
+  className?: string;
 }
 
 /**
@@ -38,18 +41,24 @@ export function JobCard({
   onApply,
   onSave,
   saved = false,
+  className,
 }: JobCardProps) {
   const salary = formatSalaryRange(job.salaryMin, job.salaryMax);
   const closed = job.status === "CLOSED";
 
   return (
-    <Card>
+    <Card
+      className={cn(
+        "transition-[border-color,box-shadow,transform] duration-200 ease-out hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-[var(--elevation-card-hover)]",
+        className
+      )}
+    >
       <CardHeader>
         <CardTitle>
           {detailHref ? (
             <Link
               href={detailHref}
-              className="rounded-sm underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-ring"
+              className="rounded-sm underline-offset-4 transition-colors duration-200 hover:text-primary hover:underline focus-visible:outline-2 focus-visible:outline-ring"
             >
               {job.title}
             </Link>
@@ -61,6 +70,12 @@ export function JobCard({
         {closed ? (
           <CardAction>
             <JobStatusBadge status={job.status} />
+          </CardAction>
+        ) : job.category ? (
+          <CardAction>
+            <Badge variant="secondary" className="max-w-32 truncate">
+              {job.category}
+            </Badge>
           </CardAction>
         ) : null}
       </CardHeader>
@@ -89,14 +104,14 @@ export function JobCard({
         ) : null}
         {onApply ? (
           <Button
-            className="h-10 bg-cta px-4 text-cta-foreground hover:bg-cta/90"
+          className="h-11 px-4"
             disabled={closed}
             onClick={() => onApply(job.id)}
           >
             Lamar
           </Button>
         ) : detailHref ? (
-          <Button variant="outline" size="lg" className="h-10 px-4" asChild>
+          <Button variant="outline" size="lg" className="h-11 px-4" asChild>
             <Link href={detailHref}>Lihat Detail</Link>
           </Button>
         ) : null}

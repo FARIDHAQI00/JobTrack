@@ -51,20 +51,20 @@ export function LoginForm({ next }: LoginFormProps) {
       {state.error ? (
         <p
           role="alert"
-          className="flex items-start gap-2 rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive"
+          className="flex items-start gap-2 rounded-xl border border-destructive/15 bg-destructive/10 px-3.5 py-3 text-sm text-destructive"
         >
           <AlertCircle className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
           {state.error}
         </p>
       ) : null}
-      <Button type="submit" size="lg" className="h-11" disabled={pending}>
+      <Button type="submit" size="lg" className="h-11 w-full" disabled={pending}>
         {pending ? "Memproses..." : "Masuk"}
       </Button>
       <p className="text-center text-sm text-muted-foreground">
         Belum punya akun?{" "}
         <Link
           href="/register"
-          className="font-medium text-primary hover:underline"
+          className="font-semibold text-primary transition-colors hover:text-foreground hover:underline"
         >
           Daftar
         </Link>

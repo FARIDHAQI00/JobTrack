@@ -18,22 +18,22 @@ export default async function EmployerNewJobPage() {
   const company = await getCompanyRepository().getByUserId(user.id);
 
   return (
-    <div className="grid gap-6">
+    <div className="grid gap-7">
       <div className="grid gap-4">
         <Link
           href="/employer/jobs"
-          className="inline-flex w-fit items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+          className="inline-flex w-fit items-center gap-2 rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition-colors duration-200 hover:bg-card/75 hover:text-primary"
         >
           <ArrowLeft className="size-4" aria-hidden="true" />
           Kembali ke lowongan saya
         </Link>
-        <h1 className="font-heading text-2xl font-semibold tracking-tight">
+        <h1 className="font-heading text-3xl font-semibold tracking-tight sm:text-4xl">
           Buat Lowongan
         </h1>
       </div>
 
       {!company ? (
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-warning-bg px-4 py-3 text-sm text-warning">
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-warning/15 bg-warning-bg/85 px-4 py-4 text-sm text-warning">
           <span>
             Profil perusahaan belum ada. Isi dulu sebelum menerbitkan lowongan.
           </span>
@@ -46,7 +46,7 @@ export default async function EmployerNewJobPage() {
         </div>
       ) : null}
 
-      <Card>
+      <Card className="bg-card/90">
         <CardHeader>
           <CardTitle>Detail Lowongan</CardTitle>
         </CardHeader>

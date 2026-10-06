@@ -30,24 +30,24 @@ export default async function EmployerEditJobPage({
   }
 
   return (
-    <div className="grid gap-6">
+    <div className="grid gap-7">
       <div className="grid gap-4">
         <Link
           href="/employer/jobs"
-          className="inline-flex w-fit items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+          className="inline-flex w-fit items-center gap-2 rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition-colors duration-200 hover:bg-card/75 hover:text-primary"
         >
           <ArrowLeft className="size-4" aria-hidden="true" />
           Kembali ke lowongan saya
         </Link>
         <div className="flex flex-wrap items-center gap-3">
-          <h1 className="font-heading text-2xl font-semibold tracking-tight">
+          <h1 className="font-heading text-3xl font-semibold tracking-tight sm:text-4xl">
             Edit Lowongan
           </h1>
           <JobStatusBadge status={job.status} />
         </div>
       </div>
 
-      <Card>
+      <Card className="bg-card/90">
         <CardHeader>
           <CardTitle>Detail Lowongan</CardTitle>
         </CardHeader>
@@ -57,7 +57,7 @@ export default async function EmployerEditJobPage({
       </Card>
 
       <div>
-        <Button variant="outline" asChild>
+        <Button variant="outline" className="h-11" asChild>
           <Link href={`/employer/jobs/${job.id}/applicants`}>
             Lihat Pelamar Lowongan Ini
           </Link>

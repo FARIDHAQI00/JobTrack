@@ -31,10 +31,10 @@ export default async function EmployerJobsPage() {
   const applicantsCount = Object.fromEntries(countsEntries);
 
   return (
-    <div className="grid gap-6">
+    <div className="grid gap-7">
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div className="grid gap-1">
-          <h1 className="font-heading text-2xl font-semibold tracking-tight">
+          <h1 className="font-heading text-3xl font-semibold tracking-tight sm:text-4xl">
             Lowongan Saya
           </h1>
           <p className="text-muted-foreground">
@@ -42,7 +42,10 @@ export default async function EmployerJobsPage() {
           </p>
         </div>
         <Button size="lg" className="h-11" asChild>
-          <Link href="/employer/jobs/new">+ Buat Lowongan</Link>
+          <Link href="/employer/jobs/new">
+            <BriefcaseBusiness aria-hidden="true" />
+            Buat Lowongan
+          </Link>
         </Button>
       </header>
 
@@ -52,7 +55,7 @@ export default async function EmployerJobsPage() {
             <EmployerJobsList jobs={jobs} applicantsCount={applicantsCount} />
           ) : (
             <div className="flex flex-col items-center gap-3 py-14 text-center">
-              <span className="flex size-12 items-center justify-center rounded-2xl bg-muted text-muted-foreground">
+              <span className="flex size-12 items-center justify-center rounded-2xl bg-secondary text-primary">
                 <BriefcaseBusiness className="size-5" aria-hidden="true" />
               </span>
               <p className="font-medium">Belum ada lowongan</p>

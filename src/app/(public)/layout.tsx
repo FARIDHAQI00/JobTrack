@@ -14,7 +14,7 @@ export default async function PublicLayout({
   const user = await getSessionUser();
 
   return (
-    <div className="flex min-h-[100dvh] flex-col">
+    <div className="public-canvas flex min-h-[100dvh] flex-col">
       <a
         href="#konten"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-primary-foreground"
