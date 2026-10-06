@@ -19,6 +19,12 @@ export interface DashboardShellProps {
 export function DashboardShell({ user, items, children }: DashboardShellProps) {
   return (
     <div className="flex min-h-[100dvh] flex-col">
+      <a
+        href="#konten"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-primary-foreground"
+      >
+        Lewati ke konten
+      </a>
       <header className="sticky top-0 z-40 border-b border-border/70 bg-background/90 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-7xl items-center gap-6 px-6">
           <Link
@@ -43,7 +49,7 @@ export function DashboardShell({ user, items, children }: DashboardShellProps) {
           </div>
         </div>
       </header>
-      <main className="mx-auto w-full max-w-7xl flex-1 px-6 py-8">
+      <main id="konten" className="mx-auto w-full max-w-7xl flex-1 px-6 py-8">
         {children}
       </main>
     </div>

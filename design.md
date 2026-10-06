@@ -561,7 +561,7 @@ Phase 4 (in progress):
 - [x] Sprint 1: shell, landing, listing/search/filter, detail, repository + mock, artefak Supabase (`docs/sprint/sprint-1.md`)
 - [x] Sprint 2: auth dual-mode, seeker dashboard/applications/saved/profile, apply + save, testing setup (`docs/sprint/sprint-2.md`)
 - [x] Sprint 3: employer dashboard, CRUD job, applicants + status, company profile (`docs/sprint/sprint-3.md`)
-- [ ] Sprint 4: integration + polish
+- [x] Sprint 4: integration + polish (error/loading/skip-link, Dockerfile, README final, materi presentasi) - `docs/sprint/sprint-4.md`; build image & deploy menunggu aksi manual
 
 ## 15. Design QA
 

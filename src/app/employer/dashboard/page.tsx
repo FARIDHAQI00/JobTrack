@@ -78,6 +78,10 @@ export default async function EmployerDashboardPage() {
     )
     .slice(0, 5);
 
+  const interviewApplicants = allApplicants.filter(
+    (entry) => entry.applicant.status === "INTERVIEW"
+  );
+
   const activities: ActivityItem[] = recentApplicants.map(
     ({ job, applicant }) => ({
       id: applicant.id,
@@ -170,6 +174,36 @@ export default async function EmployerDashboardPage() {
           )}
         </DashboardSection>
       </section>
+
+      {interviewApplicants.length > 0 ? (
+        <DashboardSection
+          title="Kandidat Tahap Interview"
+          description="Kandidat yang siap dijadwalkan interview."
+        >
+          <ul className="divide-y">
+            {interviewApplicants.map(({ job, applicant }) => (
+              <li
+                key={applicant.id}
+                className="flex flex-wrap items-center gap-3 py-3 first:pt-0 last:pb-0"
+              >
+                <div className="grid min-w-0 flex-1 gap-0.5">
+                  <span className="truncate font-medium">
+                    {applicant.name}
+                  </span>
+                  <span className="truncate text-sm text-muted-foreground">
+                    {job.title}
+                  </span>
+                </div>
+                <Button variant="outline" size="sm" asChild>
+                  <Link href={`/employer/jobs/${job.id}/applicants`}>
+                    Kelola Kandidat
+                  </Link>
+                </Button>
+              </li>
+            ))}
+          </ul>
+        </DashboardSection>
+      ) : null}
 
       <DashboardSection
         title="Lowongan Terbaru"
