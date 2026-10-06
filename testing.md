@@ -4,6 +4,15 @@
 
 Karena fokus tugas adalah Front-End, testing diprioritaskan pada logic dan critical user flow.
 
+Tooling (Sprint 2, OPS-05): **Vitest + Testing Library + jsdom**.
+
+```bash
+npm test          # sekali jalan
+npm run test:watch
+```
+
+Test saat ini: filter lowongan, transisi status lamaran, role guard, `ApplicationService`, dan smoke component `KPIStatCard` (`src/**/*.test.ts`).
+
 ## 2. Unit Test Targets
 
 - filter jobs

@@ -12,17 +12,22 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { UserMenu } from "@/features/auth/components/user-menu";
 import { cn } from "@/lib/utils";
+import type { SessionUser } from "@/lib/auth/types";
 
 const NAV_ITEMS = [{ href: "/jobs", label: "Lowongan" }];
 
+export interface SiteHeaderProps {
+  user?: SessionUser | null;
+}
+
 /**
- * Header publik: logo, navigasi utama, dan aksi masuk/daftar.
+ * Header publik: logo, navigasi utama, dan aksi masuk/daftar atau menu akun.
  *
  * Mobile menampilkan menu dalam Sheet; desktop satu baris (maks 72px).
- * Status login akan dihubungkan pada Sprint 2 (Supabase Auth).
  */
-export function SiteHeader() {
+export function SiteHeader({ user }: SiteHeaderProps) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -64,12 +69,18 @@ export function SiteHeader() {
         </nav>
 
         <div className="ml-auto hidden items-center gap-2 md:flex">
-          <Button variant="ghost" size="lg" asChild>
-            <Link href="/login">Masuk</Link>
-          </Button>
-          <Button size="lg" asChild>
-            <Link href="/register">Daftar</Link>
-          </Button>
+          {user ? (
+            <UserMenu user={user} />
+          ) : (
+            <>
+              <Button variant="ghost" size="lg" asChild>
+                <Link href="/login">Masuk</Link>
+              </Button>
+              <Button size="lg" asChild>
+                <Link href="/register">Daftar</Link>
+              </Button>
+            </>
+          )}
         </div>
 
         <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
@@ -100,18 +111,24 @@ export function SiteHeader() {
                     </Link>
                   </li>
                 ))}
-                <li className="mt-2 flex flex-col gap-2 border-t pt-4">
-                  <Button variant="outline" size="lg" asChild>
-                    <Link href="/login" onClick={() => setMenuOpen(false)}>
-                      Masuk
-                    </Link>
-                  </Button>
-                  <Button size="lg" asChild>
-                    <Link href="/register" onClick={() => setMenuOpen(false)}>
-                      Daftar
-                    </Link>
-                  </Button>
-                </li>
+                {user ? (
+                  <li className="mt-2 border-t pt-4">
+                    <UserMenu user={user} />
+                  </li>
+                ) : (
+                  <li className="mt-2 flex flex-col gap-2 border-t pt-4">
+                    <Button variant="outline" size="lg" asChild>
+                      <Link href="/login" onClick={() => setMenuOpen(false)}>
+                        Masuk
+                      </Link>
+                    </Button>
+                    <Button size="lg" asChild>
+                      <Link href="/register" onClick={() => setMenuOpen(false)}>
+                        Daftar
+                      </Link>
+                    </Button>
+                  </li>
+                )}
               </ul>
             </nav>
           </SheetContent>

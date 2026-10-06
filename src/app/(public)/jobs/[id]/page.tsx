@@ -12,9 +12,17 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { JobStatusBadge } from "@/features/jobs/components/job-status-badge";
+import { SaveJobButton } from "@/features/jobs/components/save-job-button";
+import { ApplyDialog } from "@/features/applications/components/apply-dialog";
+import { ApplicationStatusBadge } from "@/features/applications/components/application-status-badge";
 import { EMPLOYMENT_TYPE_LABELS } from "@/domain/job";
+import { getSessionUser } from "@/lib/auth/service";
 import { formatDateID, formatSalaryRange } from "@/lib/format";
-import { getJobRepository } from "@/repositories";
+import {
+  getApplicationService,
+  getJobRepository,
+  getSavedJobRepository,
+} from "@/repositories";
 
 interface JobDetailPageProps {
   params: Promise<{ id: string }>;
@@ -43,6 +51,20 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
   if (!job) {
     notFound();
   }
+
+  const user = await getSessionUser();
+  const isSeeker = user?.role === "JOB_SEEKER";
+
+  const [saved, myApplications] = isSeeker
+    ? await Promise.all([
+        getSavedJobRepository().isSaved(user.id, job.id),
+        getApplicationService().listMyApplications(user.id),
+      ])
+    : [false, []];
+
+  const myApplication = myApplications.find(
+    (application) => application.jobId === job.id
+  );
 
   const closed = job.status === "CLOSED";
   const salary = formatSalaryRange(job.salaryMin, job.salaryMax);
@@ -160,9 +182,42 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
 
               <div className="grid gap-2">
                 {closed ? (
-                  <Button size="lg" className="h-11" disabled>
-                    Lowongan Ditutup
-                  </Button>
+                  <>
+                    <Button size="lg" className="h-11" disabled>
+                      Lowongan Ditutup
+                    </Button>
+                    <p className="text-center text-xs text-muted-foreground">
+                      Lowongan ini sudah tidak menerima lamaran baru.
+                    </p>
+                  </>
+                ) : isSeeker ? (
+                  <>
+                    {myApplication ? (
+                      <div className="grid gap-2">
+                        <Button size="lg" className="h-11" disabled>
+                          Sudah Dilamar
+                        </Button>
+                        <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
+                          Status saat ini:
+                          <ApplicationStatusBadge
+                            status={myApplication.status}
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      <ApplyDialog jobId={job.id} jobTitle={job.title} />
+                    )}
+                    <SaveJobButton jobId={job.id} initialSaved={saved} />
+                  </>
+                ) : user ? (
+                  <>
+                    <Button size="lg" className="h-11" disabled>
+                      Khusus Job Seeker
+                    </Button>
+                    <p className="text-center text-xs text-muted-foreground">
+                      Masuk dengan akun Job Seeker untuk melamar lowongan ini.
+                    </p>
+                  </>
                 ) : (
                   <>
                     <Button
@@ -175,13 +230,11 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
                     <Button variant="outline" size="lg" className="h-11" asChild>
                       <Link href={loginHref}>Simpan lowongan</Link>
                     </Button>
+                    <p className="text-center text-xs text-muted-foreground">
+                      Login diperlukan untuk melamar atau menyimpan lowongan.
+                    </p>
                   </>
                 )}
-                <p className="text-center text-xs text-muted-foreground">
-                  {closed
-                    ? "Lowongan ini sudah tidak menerima lamaran baru."
-                    : "Login diperlukan untuk melamar atau menyimpan lowongan."}
-                </p>
               </div>
             </CardContent>
           </Card>

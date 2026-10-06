@@ -18,6 +18,7 @@ Prinsip **Front-End First** tetap berlaku:
 - Mock repository tetap tersedia agar UI tidak menunggu backend.
 - Supabase diakses lewat repository pattern; UI tidak memanggil Supabase langsung.
 - Perpindahan `MockRepository → SupabaseRepository` tidak mengubah komponen UI secara besar-besaran (`architecture.md`).
+- **Dual-mode**: selama `NEXT_PUBLIC_SUPABASE_URL`/`ANON_KEY` belum diisi, aplikasi berjalan pada mode demo (mock repository + akun demo dari `seed.sql`); begitu env diisi, factory otomatis beralih ke implementasi Supabase tanpa perubahan UI.
 
 ## 2. Mapping ke Blueprint
 
