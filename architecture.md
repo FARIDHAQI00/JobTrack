@@ -66,9 +66,10 @@ src/
 │   └── mock/
 ├── domain/
 ├── lib/
-│   └── supabase/        # client, server, middleware helpers (@supabase/ssr)
+│   └── supabase/        # client & server helpers (@supabase/ssr)
 ├── types/
-└── mocks/
+├── mocks/
+└── proxy.ts             # session refresh + role guard (Next.js 16)
 
 supabase/
 ├── config.toml
@@ -128,7 +129,7 @@ Vercel Next.js
 ```
 
 - Session auth menggunakan cookie (bukan localStorage) agar aman di App Router dan middleware.
-- Role guard berjalan di `middleware.ts` dan diverifikasi ulang oleh RLS di database.
+- Role guard berjalan di `src/proxy.ts` (konvensi Next.js 16, sebelumnya `middleware.ts`) dan diverifikasi ulang oleh RLS di database.
 - Local development dapat memakai Supabase local (`supabase start`, berbasis Docker) atau project dev.
 
 Detail: `vercel.md`, `supabase.md`.

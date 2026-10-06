@@ -556,10 +556,12 @@ Phase 3 (done - §17):
 - [x] Applicant management
 - [x] Landing, Login, Register, Saved Jobs, Seeker Profile, Create/Edit Job, Company Profile
 
-Phase 4 (next):
+Phase 4 (in progress):
 
-- [ ] Sprint 1-3 implementation mengikuti `docs/backlog/sprint-plan.md`
-- [ ] Sprint 4 integration + polish
+- [x] Sprint 1: shell, landing, listing/search/filter, detail, repository + mock, artefak Supabase (`docs/sprint/sprint-1.md`)
+- [ ] Sprint 2: auth + job seeker
+- [ ] Sprint 3: employer
+- [ ] Sprint 4: integration + polish
 
 ## 15. Design QA
 

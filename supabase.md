@@ -32,7 +32,7 @@ Prinsip **Front-End First** tetap berlaku:
 
 - Gunakan **Supabase Auth** email + password.
 - Integrasi Next.js App Router memakai library `@supabase/ssr` (session berbasis cookie).
-- `middleware.ts` melakukan refresh session dan role guard (`JOB_SEEKER → /seeker/*`, `EMPLOYER → /employer/*`).
+- `src/proxy.ts` (file `proxy` pada Next.js 16, sebelumnya `middleware.ts`) melakukan refresh session dan role guard (`JOB_SEEKER → /seeker/*`, `EMPLOYER → /employer/*`).
 - `role` disimpan di tabel `profiles`, bukan dipercaya dari client.
 - Trigger `handle_new_user()` membuat row `profiles` otomatis saat signup.
 - Untuk kebutuhan UTS/demo: **email confirmation dimatikan** di project demo agar demo lancar; keputusan ini dicatat di `documentation.md` (Decision Log).
