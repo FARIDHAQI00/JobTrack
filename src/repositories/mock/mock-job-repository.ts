@@ -2,6 +2,7 @@ import type { Job, JobFilters } from "@/domain/job";
 import { filterJobs } from "@/lib/job-filters";
 import type { JobDraft, JobRepository } from "../job-repository";
 import { MOCK_JOBS } from "./job-data";
+import { getMockStore, nextMockId } from "./store";
 
 /**
  * Implementasi JobRepository dengan data in-memory.
@@ -29,7 +30,7 @@ export class MockJobRepository implements JobRepository {
   }
 
   async create(draft: JobDraft): Promise<Job> {
-    const job: Job = { ...draft, id: `job-${this.jobs.length + 1}` };
+    const job: Job = { ...draft, id: nextMockId("job") };
     this.jobs.push(job);
     return job;
   }
@@ -46,5 +47,16 @@ export class MockJobRepository implements JobRepository {
 
   async close(id: string): Promise<Job> {
     return this.update(id, { status: "CLOSED" });
+  }
+
+  async delete(id: string): Promise<void> {
+    const store = getMockStore();
+    this.jobs = this.jobs.filter((job) => job.id !== id);
+    store.applications = store.applications.filter(
+      (application) => application.jobId !== id
+    );
+    store.savedJobs = store.savedJobs.filter(
+      (saved) => saved.jobId !== id
+    );
   }
 }

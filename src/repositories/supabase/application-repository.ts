@@ -29,6 +29,7 @@ interface ApplicantRow {
   id: string;
   status: ApplicationStatus;
   applied_at: string;
+  cover_letter: string | null;
   profiles: ProfileEmbed | ProfileEmbed[] | null;
 }
 
@@ -80,7 +81,7 @@ export class SupabaseApplicationRepository implements ApplicationRepository {
     const { data, error } = await supabase
       .from("applications")
       .select(
-        "id, status, applied_at, profiles ( email, seeker_profiles ( full_name ) )"
+        "id, status, applied_at, cover_letter, profiles ( email, seeker_profiles ( full_name ) )"
       )
       .eq("job_id", jobId)
       .order("applied_at", { ascending: false })
@@ -99,8 +100,25 @@ export class SupabaseApplicationRepository implements ApplicationRepository {
         email: profile?.email,
         status: row.status,
         appliedAt: row.applied_at,
+        coverLetter: row.cover_letter ?? undefined,
       };
     });
+  }
+
+  async findById(
+    applicationId: string
+  ): Promise<ApplicationSummary | null> {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("applications")
+      .select(APPLICATION_SELECT)
+      .eq("id", applicationId)
+      .maybeSingle<ApplicationRow>();
+
+    if (error) {
+      throw new Error(`Gagal memuat lamaran: ${error.message}`);
+    }
+    return data ? toSummary(data) : null;
   }
 
   async create(input: NewApplicationInput): Promise<ApplicationSummary> {

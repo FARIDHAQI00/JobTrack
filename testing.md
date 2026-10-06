@@ -11,7 +11,7 @@ npm test          # sekali jalan
 npm run test:watch
 ```
 
-Test saat ini: filter lowongan, transisi status lamaran, role guard, `ApplicationService`, dan smoke component `KPIStatCard` (`src/**/*.test.ts`).
+Test saat ini (36 test): filter lowongan, transisi status lamaran, role guard, `JobService` (kepemilikan lowongan), `ApplicationService` (apply + ubah status kandidat), dan smoke component `KPIStatCard` (`src/**/*.test.ts`).
 
 ## 2. Unit Test Targets
 

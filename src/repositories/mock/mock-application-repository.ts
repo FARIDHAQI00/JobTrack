@@ -55,6 +55,7 @@ export class MockApplicationRepository implements ApplicationRepository {
     const store = getMockStore();
     return store.applications
       .filter((record) => record.jobId === jobId)
+      .sort((a, b) => b.appliedAt.localeCompare(a.appliedAt))
       .map((record) => {
         const profile = store.seekerProfiles.get(record.seekerId);
         return {
@@ -63,8 +64,25 @@ export class MockApplicationRepository implements ApplicationRepository {
           email: undefined,
           status: record.status,
           appliedAt: record.appliedAt,
+          coverLetter: record.coverLetter,
         };
       });
+  }
+
+  async findById(applicationId: string): Promise<ApplicationSummary | null> {
+    const store = getMockStore();
+    const record = store.applications.find(
+      (candidate) => candidate.id === applicationId
+    );
+    if (!record) {
+      return null;
+    }
+    const job = await this.jobRepository.findById(record.jobId);
+    return toSummary(
+      record,
+      job?.title ?? "Lowongan",
+      job?.companyName ?? "Perusahaan"
+    );
   }
 
   async create(input: NewApplicationInput): Promise<ApplicationSummary> {
