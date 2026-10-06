@@ -51,7 +51,7 @@ Example structure:
 
 ```text
 ┌──────────────────────────────────────────────────────────────┐
-│ JobTrack    Overview  Jobs  Applicants  Schedule     Profile │
+│ JobTrack  Overview  Jobs  Profile        [+ Buat Lowongan]  │
 ├──────────────────────────────────────────────────────────────┤
 │ Good Morning, Company!                                       │
 │ Today: ...                                                   │
@@ -76,7 +76,7 @@ Use the same visual system, but change the information hierarchy:
 
 ```text
 ┌──────────────────────────────────────────────────────────────┐
-│ JobTrack    Find Jobs  Applications  Saved Jobs      Profile │
+│ JobTrack  Overview  Find Jobs  Applications  Saved  [👤]    │
 ├──────────────────────────────────────────────────────────────┤
 │ Good Morning, [Name]!                                        │
 │ Find your next opportunity.                                  │
@@ -172,33 +172,43 @@ Rules from the Taste skill workflow, applied to JobTrack:
 
 ## 4. Navigation
 
+Routes follow `prd.md` §7. Applicants is reached from a job row, not a separate top-level page (no `/employer/applicants` route in the PRD). Interview scheduling is a dashboard widget (`InterviewCard`), not a separate page.
+
 ### Employer
 
 ```text
-Overview
-Jobs
-Applicants
-Schedule
-Profile
+Overview   → /employer/dashboard
+Jobs       → /employer/jobs
+Profile    → /employer/profile
 ```
 
-Primary CTA:
-
-`+ Create Job`
+Primary CTA: `+ Buat Lowongan` → `/employer/jobs/new`
 
 ### Job Seeker
 
 ```text
-Overview
-Find Jobs
-Applications
-Saved Jobs
-Profile
+Overview      → /seeker/dashboard
+Find Jobs     → /jobs
+Applications  → /seeker/applications
+Saved Jobs    → /seeker/saved
+Profile       → /seeker/profile
 ```
 
-Primary CTA:
+Primary CTA: `Find Jobs` → `/jobs`
 
-`Find Jobs`
+### Public
+
+```text
+Lowongan   → /jobs
+Masuk      → /login
+Daftar     → /register
+```
+
+### Role Guard
+
+- `/seeker/*` requires `JOB_SEEKER`; `/employer/*` requires `EMPLOYER`.
+- Wrong role is redirected to its own dashboard, unauthenticated users to `/login` with return URL.
+- Menu never shows the other role's items (`prd.md` §10).
 
 ## 5. Color System
 
@@ -536,14 +546,20 @@ Phase 2 (done):
 - [x] Design tokens + fonts applied (`globals.css`, `layout.tsx`)
 - [x] QA surface `/styleguide`
 
-Phase 3 (next):
+Phase 3 (done - §17):
 
-- [ ] Employer dashboard wireframe
-- [ ] Seeker dashboard wireframe
-- [ ] Job listing
-- [ ] Job detail
-- [ ] Application tracking
-- [ ] Applicant management
+- [x] Employer dashboard wireframe
+- [x] Seeker dashboard wireframe
+- [x] Job listing
+- [x] Job detail
+- [x] Application tracking
+- [x] Applicant management
+- [x] Landing, Login, Register, Saved Jobs, Seeker Profile, Create/Edit Job, Company Profile
+
+Phase 4 (next):
+
+- [ ] Sprint 1-3 implementation mengikuti `docs/backlog/sprint-plan.md`
+- [ ] Sprint 4 integration + polish
 
 ## 15. Design QA
 
@@ -625,4 +641,375 @@ Persisted design system: `design-system/jobtrack/MASTER.md`.
 
 ### Next Step
 
-Phase 3 (wireframes/screens) per `roadmap.md`.
+Phase 4 (Sprint Implementation) per `roadmap.md`. Screen specs are in §17.
+
+---
+
+## 17. Phase 3 — Screen Design (Wireframes & Specs)
+
+> Output Phase 3 sesuai `roadmap.md`. Implementasi layar dilakukan pada Phase 4 (Sprint 1-4).
+> Verifikasi: UI UX Pro Max (UX flow), Taste (hierarchy & composition), UI Design (accessibility & responsive).
+
+### 17.1 Site Map
+
+```text
+/                         Landing (public)
+├── /jobs                 Job Listing (public)
+│   └── /jobs/[id]        Job Detail (public)
+├── /login                Login (public)
+├── /register             Register (public)
+├── /seeker               (JOB_SEEKER only)
+│   ├── /seeker/dashboard     Overview
+│   ├── /seeker/applications  Riwayat & status lamaran
+│   ├── /seeker/saved         Lowongan tersimpan
+│   └── /seeker/profile       Profil pelamar
+└── /employer             (EMPLOYER only)
+    ├── /employer/dashboard            Overview
+    ├── /employer/jobs                 Daftar lowongan
+    │   ├── /employer/jobs/new         Buat lowongan
+    │   └── /employer/jobs/[id]        Edit lowongan
+    │       └── /employer/jobs/[id]/applicants   Kandidat
+    └── /employer/profile              Profil perusahaan
+```
+
+### 17.2 Screen Index
+
+| # | Screen | Route | Role | Sprint | Backlog |
+|---|---|---|---|---|---|
+| 1 | Landing | `/` | Public | 1 | US-04, US-05 |
+| 2 | Job Listing | `/jobs` | Public | 1 | US-04-06, US-22 |
+| 3 | Job Detail | `/jobs/[id]` | Public | 1 | US-07-09 |
+| 4 | Login | `/login` | Public | 2 | US-01 |
+| 5 | Register | `/register` | Public | 2 | US-02 |
+| 6 | Seeker Dashboard | `/seeker/dashboard` | Seeker | 2 | US-10 |
+| 7 | Applications | `/seeker/applications` | Seeker | 2 | US-11 |
+| 8 | Saved Jobs | `/seeker/saved` | Seeker | 2 | US-08 |
+| 9 | Seeker Profile | `/seeker/profile` | Seeker | 2 | US-12 |
+| 10 | Employer Dashboard | `/employer/dashboard` | Employer | 3 | US-13 |
+| 11 | Employer Jobs | `/employer/jobs` | Employer | 3 | US-14-16 |
+| 12 | Create/Edit Job | `/employer/jobs/new`, `/employer/jobs/[id]` | Employer | 3 | US-14, US-15 |
+| 13 | Applicants | `/employer/jobs/[id]/applicants` | Employer | 3 | US-17, US-18 |
+| 14 | Company Profile | `/employer/profile` | Employer | 3 | US-19 |
+
+### 17.3 Shared Layout Patterns
+
+- **App shell:** compact top nav, max height 72px. Desktop shows search input and avatar menu; mobile collapses nav into a `Sheet` hamburger. One line at desktop.
+- **Page header:** title/greeting left, primary action right. No eyebrow labels.
+- **Dashboard grid:** CSS Grid 12 kolom. KPI row: 4-up (xl), 2-up (sm), 1-up (mobile). Charts/panels span 6–8, feed spans 4.
+- **List pattern:** job cards for discovery; data tables for applicants (desktop) collapsing to stacked `ApplicantRow` (mobile).
+- **Filter bar:** chips wrap (`flex-wrap`, never clipped). Mobile: visible filter button opening a `Sheet` with active-filter count.
+- **Form pattern:** label above (visible, never placeholder-only), helper optional, error below the field. Submit button shows loading; destructive actions use `Dialog` confirm.
+- **Feedback:** submit = loading state then toast success/error; empty states always include an action.
+- **Empty state pattern:** icon + one-line explanation + primary action (verified via UX search, severity Medium).
+
+### 17.4 Wireframes
+
+Notation: `[ ]` component, `…` repeating content. All copy in Bahasa Indonesia, plain functional language.
+
+#### 1. Landing (`/`)
+
+Marketplace/Directory pattern (verified): search-first hero.
+
+```text
+┌────────────────────────────────────────────────────────────┐
+│ [JobTrack]   Lowongan                    Masuk   [Daftar]  │
+├────────────────────────────────────────────────────────────┤
+│  Temukan pekerjaan yang tepat untukmu                      │
+│  [ 🔍 Cari posisi, perusahaan, atau kota… ]     [Cari]      │
+│  Populer: [Teknologi] [Desain] [Data] [Marketing]          │
+├────────────────────────────────────────────────────────────┤
+│  Lowongan terbaru                                          │
+│  [JobCard] [JobCard] [JobCard]                             │
+│  [Lihat semua lowongan]                                    │
+├────────────────────────────────────────────────────────────┤
+│  Untuk Employer: pasang lowongan dalam hitungan menit      │
+│  [Buat Lowongan]                                           │
+├────────────────────────────────────────────────────────────┤
+│  Footer: tautan, tim, dokumentasi                          │
+└────────────────────────────────────────────────────────────┘
+```
+
+- **Components:** JobCard, Button, Input, Badge (kategori).
+- **Responsive:** hero search full-width mobile; kartu 1 kolom mobile, 2 tablet, 3 desktop.
+- **States:** skeleton kartu saat loading; pencarian tanpa hasil menampilkan saran kategori (bukan layar kosong).
+
+#### 2. Job Listing (`/jobs`)
+
+```text
+┌────────────────────────────────────────────────────────────┐
+│ [JobTrack]   Lowongan        [ 🔍 cari… ]      [Masuk]     │
+├───────────────┬────────────────────────────────────────────┤
+│ Filter        │  24 lowongan          [Terbaru ▾]          │
+│ Kategori      │  ┌──────────────────────────────────────┐  │
+│ [chips…]      │  │ [JobCard]                            │  │
+│ Lokasi        │  ├──────────────────────────────────────┤  │
+│ [chips…]      │  │ [JobCard]                            │  │
+│ Tipe          │  ├──────────────────────────────────────┤  │
+│ [chips…]      │  │ [JobCard]                            │  │
+│ [Reset]       │  └──────────────────────────────────────┘  │
+│               │  [‹ 1 2 3 ›]                               │
+└───────────────┴────────────────────────────────────────────┘
+
+Mobile: [Filter (2)] [Terbaru ▾]  → Sheet berisi chips filter
+```
+
+- **Components:** JobCard, Badge/chips, Sheet (mobile filter), Skeleton, Pagination.
+- **Responsive:** sidebar 280px desktop; mobile = Sheet filter dengan tombol Terapkan.
+- **States:** loading skeleton; empty = "Tidak ada lowongan yang cocok" + tombol Reset filter; filter/search tersinkron URL query.
+
+#### 3. Job Detail (`/jobs/[id]`)
+
+```text
+┌────────────────────────────────────────────────────────────┐
+│ [JobTrack]   Lowongan        [ 🔍 cari… ]      [Masuk]     │
+├───────────────────────────────────┬────────────────────────┤
+│ ← Kembali ke lowongan             │  ┌──────────────────┐  │
+│ Frontend Developer                │  │ Gaji             │  │
+│ Nusantara Digital · Jakarta       │  │ Tipe · Lokasi    │  │
+│ [Dibuka]                          │  │ [Lamar]  [Simpan]│  │
+│ Deskripsi…                        │  │ Belum melamar    │  │
+│ Kualifikasi…                      │  └──────────────────┘  │
+│ Tentang perusahaan                │  (sticky di desktop)   │
+└───────────────────────────────────┴────────────────────────┘
+```
+
+- **Components:** JobStatusBadge, Button (CTA hijau untuk Lamar), Dialog (form apply), Textarea, ApplicationStatusBadge (jika sudah pernah melamar).
+- **Responsive:** CTA card sticky kanan desktop; di mobile menjadi bar bawah/CTA penuh lebar.
+- **States:** 404/job ditutup; belum login → CTA mengarah ke `/login` dengan return URL; sudah melamar → tombol disabled "Sudah Dilamar"; apply = dialog + loading + toast sukses/gagal (verified: submit feedback, confirmation messages).
+
+#### 4. Login (`/login`)
+
+```text
+┌──────────────────────────────┐
+│         [JobTrack]           │
+│            Masuk             │
+│  Email                       │
+│  [                        ]  │
+│  Password                    │
+│  [                        ]  │
+│  [ Masuk ]                   │
+│  ⚠ Email atau password salah │
+│  Belum punya akun? Daftar    │
+└──────────────────────────────┘
+```
+
+- **Components:** Card (max-w-sm), Input, Label, Button, inline error text.
+- **States:** submitting (loading di tombol), error spesifik di bawah field, sukses → redirect sesuai role; email belum terverifikasi menampilkan pesan khusus.
+
+#### 5. Register (`/register`)
+
+```text
+┌──────────────────────────────────┐
+│            Daftar                │
+│  Email                           │
+│  [                            ]  │
+│  Password                        │
+│  [                            ]  │
+│  Daftar sebagai                  │
+│  ( • ) Job Seeker  (   ) Employer│
+│  [ Daftar ]                      │
+│  Sudah punya akun? Masuk         │
+└──────────────────────────────────┘
+```
+
+- **Components:** Card, Input, Label, RadioGroup/pilihan peran, Button.
+- **States:** email duplikat ditolak dengan pesan; role wajib dipilih; sukses → row `profiles` dibuat + redirect.
+
+#### 6. Seeker Dashboard (`/seeker/dashboard`)
+
+```text
+┌────────────────────────────────────────────────────────────┐
+│ [JobTrack]  Overview  Find Jobs  Applications  Saved  [👤] │
+├────────────────────────────────────────────────────────────┤
+│ Halo, Rani!  Ringkasan lamaranmu hari ini                  │
+│ [Lamaran 8] [Interview 2] [Saved 12] [Profil 80%]          │
+│ ┌──────────────────────────┐ ┌───────────────────────────┐ │
+│ │ Progres Lamaran          │ │ Interview Mendatang       │ │
+│ │ [ApplicationTimeline]    │ │ [InterviewCard]           │ │
+│ └──────────────────────────┘ └───────────────────────────┘ │
+│ ┌ Rekomendasi Lowongan ──────────────────────────────────┐ │
+│ │ [JobCard] [JobCard] [JobCard]                          │ │
+│ └────────────────────────────────────────────────────────┘ │
+└────────────────────────────────────────────────────────────┘
+```
+
+- **Components:** KPIStatCard, ApplicationTimeline, InterviewCard, JobCard, DashboardSection.
+- **States:** tanpa lamaran → CTA "Cari Lowongan"; tanpa interview → empty state informatif; skeleton per panel.
+
+#### 7. Applications (`/seeker/applications`)
+
+```text
+┌────────────────────────────────────────────────────────────┐
+│ Applications                                               │
+│ [Semua] [Melamar] [Screening] [Interview] [Diterima]       │
+│ ┌────────────────────────────────────────────────────────┐ │
+│ │ Frontend Developer · Nusantara Digital                 │ │
+│ │ [INTERVIEW]  Dilamar 2 Okt 2026        [Lihat detail]  │ │
+│ ├────────────────────────────────────────────────────────┤ │
+│ │ Data Analyst · Samudra Data                            │ │
+│ │ [REJECTED]   Dilamar 24 Sep 2026       [Lihat detail]  │ │
+│ └────────────────────────────────────────────────────────┘ │
+└────────────────────────────────────────────────────────────┘
+```
+
+- **Components:** ApplicationStatusBadge, filter chips, list rows, Dialog/Sheet detail (timeline).
+- **States:** empty → CTA cari lowongan; filter tanpa hasil → pesan + reset; status terbaru selalu tampil.
+
+#### 8. Saved Jobs (`/seeker/saved`)
+
+```text
+┌────────────────────────────────────────────────────────────┐
+│ Saved Jobs                                  [Cari lowongan]│
+│ [JobCard saved] [JobCard saved] [JobCard saved]            │
+└────────────────────────────────────────────────────────────┘
+```
+
+- **Components:** JobCard (`saved=true`, tombol "Tersimpan" aktif).
+- **States:** empty → CTA jelajahi lowongan; unsave menghapus dari grid dengan toast + optimistic UI.
+
+#### 9. Seeker Profile (`/seeker/profile`)
+
+```text
+┌────────────────────────────────────────────────────────────┐
+│ Profil Saya                                                │
+│ ┌ Form ──────────────────────────────┐ ┌ Kelengkapan ───┐ │
+│ │ Nama lengkap  [                  ] │ │ [████████░░] 80%│ │
+│ │ Headline      [                  ] │ │ Saran: tambah   │ │
+│ │ Bio           [                  ] │ │ headline        │ │
+│ │ Lokasi        [                  ] │ └─────────────────┘ │
+│ │ Telepon       [                  ] │                     │
+│ │ [Simpan Perubahan]                 │                     │
+│ └────────────────────────────────────┘                     │
+└────────────────────────────────────────────────────────────┘
+```
+
+- **Components:** Input, Textarea, Label, Button, Progress (kelengkapan).
+- **States:** validasi inline; sukses toast; upload CV = P2 (ditandai "Segera hadir", tidak mengganggu form).
+
+#### 10. Employer Dashboard (`/employer/dashboard`)
+
+```text
+┌────────────────────────────────────────────────────────────┐
+│ [JobTrack]  Overview  Jobs  Profile        [+ Buat Lowongan]│
+├────────────────────────────────────────────────────────────┤
+│ Halo, Nusantara Digital!                                   │
+│ [Lowongan Aktif 6] [Pelamar 187] [Interview 9] [Diterima 4]│
+│ ┌───────────────────────┐ ┌──────────────────────────────┐ │
+│ │ Hiring Pipeline       │ │ Aktivitas Terbaru            │ │
+│ │ [HiringPipeline]      │ │ [ActivityList]               │ │
+│ └───────────────────────┘ └──────────────────────────────┘ │
+│ ┌ Lowongan Terbaru ─────────────────────────────────────┐  │
+│ │ Frontend Developer [Dibuka] · 42 pelamar  [Lihat]     │  │
+│ │ Data Analyst [Ditutup] · 31 pelamar       [Lihat]     │  │
+│ └───────────────────────────────────────────────────────┘  │
+│ ┌ Interview Mendatang ──────────────────────────────────┐  │
+│ │ [InterviewCard] [InterviewCard]                       │  │
+│ └───────────────────────────────────────────────────────┘  │
+└────────────────────────────────────────────────────────────┘
+```
+
+- **Components:** KPIStatCard, HiringPipeline, ActivityList, InterviewCard, DashboardSection, JobStatusBadge.
+- **States:** company profile belum lengkap → banner CTA ke profil; belum ada lowongan → empty state dengan CTA buat lowongan.
+
+#### 11. Employer Jobs (`/employer/jobs`)
+
+```text
+┌────────────────────────────────────────────────────────────┐
+│ Lowongan Saya                          [+ Buat Lowongan]   │
+│ [Semua] [Dibuka] [Ditutup]                                 │
+│ ┌────────────────────────────────────────────────────────┐ │
+│ │ Frontend Developer  [Dibuka]  42 pelamar   [⋯]         │ │
+│ │ Data Analyst        [Ditutup] 31 pelamar   [⋯]         │ │
+│ └────────────────────────────────────────────────────────┘ │
+│  Menu [⋯]: Edit · Lihat Pelamar · Tutup · Hapus            │
+└────────────────────────────────────────────────────────────┘
+```
+
+- **Components:** JobStatusBadge, DropdownMenu, Dialog (konfirmasi), Tabs/chips filter.
+- **States:** empty → CTA; Tutup = dialog konfirmasi ringan; Hapus = dialog konfirmasi destruktif (verified: confirmation dialogs, severity High); sukses toast dan job CLOSED hilang dari listing publik.
+
+#### 12. Create/Edit Job (`/employer/jobs/new`, `/employer/jobs/[id]`)
+
+```text
+┌────────────────────────────────────────────────────────────┐
+│ ← Kembali        Buat Lowongan                             │
+│ ┌ Form (max-w-2xl) ──────────────────────────────────────┐ │
+│ │ Judul *            [                                 ] │ │
+│ │ Kategori *         [                                 ] │ │
+│ │ Lokasi *           [                                 ] │ │
+│ │ Tipe *             [Select ▾                          ] │ │
+│ │ Gaji               [Min            ] [Max            ] │ │
+│ │ Deskripsi *        [Textarea                          ] │ │
+│ │ Kualifikasi        [Textarea                          ] │ │
+│ │ [Terbitkan]  [Batal]                                   │ │
+│ └────────────────────────────────────────────────────────┘ │
+└────────────────────────────────────────────────────────────┘
+```
+
+- **Components:** Input, Select, Textarea, Label, Button, Dialog (Batal dengan perubahan).
+- **States:** validasi field wajib inline; submit loading → redirect + toast; mode edit prefill data; bukan pemilik → halaman ditolak.
+
+#### 13. Applicants (`/employer/jobs/[id]/applicants`)
+
+```text
+┌────────────────────────────────────────────────────────────┐
+│ ← Kembali   Frontend Developer · 42 pelamar                │
+│ [Semua] [Melamar] [Screening] [Interview] [Diterima]       │
+│ ┌────────────────────────────────────────────────────────┐ │
+│ │ [👤 Ayu Larasati]  [INTERVIEW]  2 Okt  [Ubah Status ▾] │ │
+│ │ [👤 Bima Nugraha]  [SCREENING]  1 Okt  [Ubah Status ▾] │ │
+│ └────────────────────────────────────────────────────────┘ │
+│  Dialog detail: cover letter · CV (P2) · riwayat status    │
+└────────────────────────────────────────────────────────────┘
+
+Mobile: ApplicantRow bertumpuk, tabel hanya di md+
+```
+
+- **Components:** ApplicantRow, ApplicationStatusBadge, Select (ubah status), Dialog detail, Table (desktop).
+- **States:** empty → pesan "Belum ada pelamar" + tips bagikan lowongan; transisi status valid saja (APPLIED → SCREENING → INTERVIEW → ACCEPTED/REJECTED); pilih REJECTED memunculkan konfirmasi; update loading + toast; kegagalan mengembalikan status sebelumnya.
+
+#### 14. Company Profile (`/employer/profile`)
+
+```text
+┌────────────────────────────────────────────────────────────┐
+│ Profil Perusahaan                                          │
+│ [Logo (P2)]                                                │
+│ Nama *        [                                        ]   │
+│ Deskripsi *   [                                        ]   │
+│ Lokasi *      [                                        ]   │
+│ Website       [                                        ]   │
+│ [Simpan Perubahan]                                         │
+│ Pratinjau: tampil di halaman detail lowongan               │
+└────────────────────────────────────────────────────────────┘
+```
+
+- **Components:** Input, Textarea, Label, Button, Avatar (logo placeholder).
+- **States:** validasi inline; satu company per employer; sama seperti seeker profile, upload logo = P2.
+
+### 17.5 Cross-Screen State Requirements
+
+| State | Rule |
+|---|---|
+| Loading | Skeleton mengikuti bentuk layout akhir, bukan spinner generik. |
+| Empty | Ikon + satu kalimat penjelasan + aksi utama. |
+| Error | Pesan dekat sumber masalah; form error inline; kegagalan data panel menampilkan retry. |
+| Success | Toast singkat + perubahan state terlihat (badge/timeline/list). |
+| Submit | Tombol loading, cegah double submit, feedback sukses/gagal (verified: submit feedback). |
+| Destructive | Dialog konfirmasi wajib sebelum Tutup/Hapus (verified: severity High). |
+| Disabled | Aksi tidak valid (mis. Lamar pada job CLOSED, sudah melamar) tampil disabled dengan alasan. |
+
+### 17.6 Verification Record (Phase 3)
+
+| Skill | Focus | Result |
+|---|---|---|
+| UI UX Pro Max | UX flow | Landing memakai pola Marketplace/Directory (hero search sebagai CTA utama); submit feedback (loading lalu sukses/gagal); dialog konfirmasi untuk aksi destruktif; empty state selalu beraksi; mobile-first |
+| UI UX Pro Max (Phase 1 refs) | Search/filter/chart | Autocomplete debounce, no-results dengan saran, chip filter wrap, hiring pipeline berlabel teks |
+| Taste | Hierarchy & composition | Satu aksi utama per layar; kartu hanya untuk hierarki; tanpa eyebrow berlebih; form label di atas; copy fungsional tanpa filler |
+| UI Design | Accessibility & responsive | Fokus terlihat, label input, target sentuh ≥44px pada aksi mobile, kontras AA dari token, motion plan + reduced-motion, breakpoint 375/768/1024/1440 |
+
+### 17.7 Consistency Notes
+
+- Semua route pada §17.1 identik dengan `prd.md` §7; tidak ada route tambahan di luar PRD.
+- Applicants memakai route PRD `/employer/jobs/[id]/applicants`; dashboard widget interview bukan halaman terpisah.
+- Setiap layar memetakan ke Story pada `docs/backlog/backlog.md` (§17.2 kolom Backlog).
+- Implementasi mengikuti Sprint 1-3 pada `docs/backlog/sprint-plan.md`; polish Sprint 4.
